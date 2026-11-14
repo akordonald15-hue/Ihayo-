@@ -4,7 +4,7 @@ The existing Next.js application is ready to import from https://github.com/akor
 
 1. Import that repository into Vercel and select the `main` branch.
 2. Root directory: repository root (`./`), containing package.json. Framework: Next.js. Node: 24.x (validated locally with 24.19.0).
-3. Install command: `npm ci`. Build command: `npm run build`. Output: `out`. The checked-in vercel.json supplies these settings. The existing Next configuration uses output: export and unoptimized local images; no image-optimization server or frontend API routes are required.
+3. Install command: `npm ci`. Build command: `npm run build`. Output Directory: leave the override disabled (Next.js defaults to `.next`). The checked-in vercel.json supplies the framework and commands without an output-directory override. The Next configuration uses standard output, with existing unoptimized local images preserved. Do not select `out`: it contains static-export assets, not the routes manifest required by the Next.js packager.
 4. Add the variables below for Production and Preview before building.
 5. Deploy, then test the real HTTPS URL: health, complete farmer journey, scenario, evidence, map, downloads, mobile menu and print preview. Check browser CORS from that exact origin. Do not call a deployment verified until these checks succeed.
 
@@ -19,6 +19,6 @@ Run locally before release: `npm run lint`, `npm run typecheck`, `npm test`, `np
 
 Backend limitation: only 569/774 areas were ready at the verification time. Missing-area consent and provenance are implemented; do not advertise complete nationwide prepared coverage. Print-preview pagination, physical-device checks and final public-origin verification remain release checks.
 
-The legacy .openai/hosting.json is preserved for project history and is not used by Vercel. Only out is published.
+The legacy .openai/hosting.json is preserved for project history and is not used by Vercel. Vercel packages the standard `.next` build output. Any existing local `out/` directory belongs to an earlier export and is not deployment input.
 
 Sources: [Vercel build settings](https://vercel.com/docs/builds/configure-a-build), [Next static exports](https://nextjs.org/docs/app/guides/static-exports), [Next build-time public variables](https://nextjs.org/docs/app/guides/environment-variables).
