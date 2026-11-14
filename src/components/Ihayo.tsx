@@ -56,10 +56,17 @@ function Experience() {
   const [nearest, setNearest] = useState<Nearest | null>(null);
   const [locationReady, setLocationReady] = useState(false);
   const [pending, setPending] = useState(false);
+  const [locationConfirmation, setLocationConfirmation] = useState<number | null>(null);
   const [hydrated, setHydrated] = useState(false);
   const submitting = useRef(false);
   const selectionVersion = useRef(0);
   const heading = useRef<HTMLDivElement>(null);
+  useEffect(
+    () => () => {
+      selectionVersion.current++;
+    },
+    [],
+  );
   const health = useQuery({
     queryKey: ['health', fixture],
     queryFn: () => client.health(),
@@ -123,6 +130,19 @@ function Experience() {
     heading.current?.querySelector<HTMLElement>('h1')?.focus();
     window.scrollTo({ top: 0, behavior: 'instant' });
   }, [screen, step, fieldIndex]);
+  useEffect(() => {
+    if (locationConfirmation === null || screen !== 'form' || step !== 0) return;
+    const timer = window.setTimeout(() => {
+      if (selectionVersion.current !== locationConfirmation) return;
+      setLocationConfirmation(null);
+      setStep(1);
+    }, 1200);
+    return () => window.clearTimeout(timer);
+  }, [locationConfirmation, screen, step]);
+  const cancelLocationAdvance = () => {
+    selectionVersion.current++;
+    setLocationConfirmation(null);
+  };
   const update = (patch: Partial<Draft>) => {
     setError('');
     setFieldErrors([]);
@@ -130,32 +150,41 @@ function Experience() {
       setLocationReady(false);
       setNearest(null);
       setPending(false);
-      selectionVersion.current++;
+      cancelLocationAdvance();
     }
     setDraft((d) => ({ ...d, ...patch }));
   };
-  async function chooseArea(place: Place, ready: boolean) {
+  async function chooseArea(place: Place) {
+    cancelLocationAdvance();
     setError('');
     setNearest(null);
-    setPending(false);
     setLocationReady(false);
+    if (!place.state || !place.lga) return;
     setDraft((d) => ({ ...d, state: place.state, lga: place.lga, use_data_from: null }));
-    const v = ++selectionVersion.current;
-    if (ready) {
-      setLocationReady(true);
-      return;
-    }
+    const version = selectionVersion.current;
     setPending(true);
     try {
-      const n = await client.nearest(place);
-      if (v === selectionVersion.current) setNearest(n);
+      // Recheck the API rather than advancing from a cached list or map flag.
+      const areas = await client.areas(place.state);
+      if (version !== selectionVersion.current) return;
+      const area = areas.find((a) => a.lga === place.lga);
+      if (!area)
+        throw new Error('We could not confirm this area. Please choose your location again.');
+      if (area.ready) {
+        setLocationReady(true);
+        setLocationConfirmation(version);
+      } else {
+        const nearby = await client.nearest(place);
+        if (version === selectionVersion.current) setNearest(nearby);
+      }
     } catch (e) {
-      if (v === selectionVersion.current) setError((e as Error).message);
+      if (version === selectionVersion.current) setError((e as Error).message);
     } finally {
-      if (v === selectionVersion.current) setPending(false);
+      if (version === selectionVersion.current) setPending(false);
     }
   }
   function changeStep(n: number) {
+    cancelLocationAdvance();
     setStep(n);
     setFieldIndex(0);
     setScreen('form');
@@ -199,6 +228,7 @@ function Experience() {
     }
   }
   const reset = () => {
+    cancelLocationAdvance();
     setDraft(emptyDraft());
     setAdvice(null);
     setRequest(null);
@@ -230,7 +260,10 @@ function Experience() {
         <button
           className="brand-button"
           onClick={() => {
-            if (screen !== 'working') setScreen('welcome');
+            if (screen !== 'working') {
+              cancelLocationAdvance();
+              setScreen('welcome');
+            }
           }}
           aria-label={ui.home}
         >
@@ -332,6 +365,7 @@ function Experience() {
                 <button
                   className="text-button"
                   onClick={() => {
+                    cancelLocationAdvance();
                     if (step === 3 && fieldIndex > 0) setFieldIndex((i) => i - 1);
                     else if (step === 0) setScreen('welcome');
                     else setStep((s) => s - 1);
@@ -340,7 +374,9 @@ function Experience() {
                   <ArrowLeft size={18} />
                   {ui.back}
                 </button>
-                <span className="eyebrow">{ui.steps[step]}</span>
+                <span className="eyebrow">
+                  Step {step + 1} of {ui.steps.length} / {ui.steps[step]}
+                </span>
               </div>
               {step === 0 ? (
                 <>
@@ -375,6 +411,7 @@ function Experience() {
                             }));
                             setNearest(null);
                             setLocationReady(true);
+                            setLocationConfirmation(++selectionVersion.current);
                           }}
                         >
                           {ui.nearestAccept}
@@ -398,7 +435,15 @@ function Experience() {
                       {ui.dataFrom}: {draft.use_data_from.lga}, {draft.use_data_from.state}
                     </p>
                   )}
-                  {draft.lga && (
+                  <div role="status" aria-live="polite" aria-atomic="true">
+                    {locationConfirmation !== null && (
+                      <p className="location-success">
+                        <Check size={20} aria-hidden="true" />
+                        {draft.lga}, {draft.state} confirmed. Next: what you grew before.
+                      </p>
+                    )}
+                  </div>
+                  {draft.lga && locationConfirmation === null && (
                     <button
                       className="button primary form-next"
                       disabled={!locationReady || !draft.lga || !!nearest || pending}
@@ -416,7 +461,6 @@ function Experience() {
                   </p>
                   <h1 tabIndex={-1}>{question('seasons')!.text}</h1>
                   <p className="form-description">{question('seasons')!.help}</p>
-                  <ProfileCard client={client} draft={draft} />
                   <Seasons q={q} draft={draft} update={update} />
                   <button
                     className="button primary form-next"
@@ -426,6 +470,7 @@ function Experience() {
                     {ui.next}
                     <ArrowRight size={18} />
                   </button>
+                  <ProfileCard client={client} draft={draft} />
                 </>
               ) : step === 2 ? (
                 <>
@@ -492,6 +537,9 @@ function Experience() {
                 </>
               ) : step === 3 ? (
                 <>
+                  <p className="question-count">
+                    Farm question {fieldIndex + 1} of {fieldKeys.length}
+                  </p>
                   <h1 tabIndex={-1}>{question(fieldKeys[fieldIndex])!.text}</h1>
                   {fieldIndex === 0 && (
                     <p className="form-description field-intro">{ui.fieldHelp}</p>

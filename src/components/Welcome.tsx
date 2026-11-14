@@ -113,6 +113,40 @@ export default function Welcome({
         fixture={fixture}
         onRetry={onRetry}
       />
+      <section className="farming-context" aria-labelledby="farming-context-title">
+        <div>
+          <p className="chapter">The next planting decision</p>
+          <h2 id="farming-context-title">
+            What worked last season may not be enough for the next.
+          </h2>
+          <p>
+            Rain changes. Soil needs care. Seed, workers and markets shape what is practical.
+            Choosing what to grow means weighing all of these together.
+          </p>
+        </div>
+        <div className="farming-context-details">
+          <p className="context-solution">
+            Ihayo connects your crop history and priorities with local environmental records and
+            agricultural studies. Compare planting options, see the reasons and check what remains
+            uncertain.
+          </p>
+          <dl className="people-ledger">
+            <div>
+              <dt>For farmers</dt>
+              <dd>
+                Start with the place you farm and the crops you remember. No account or technical
+                knowledge needed.
+              </dd>
+            </div>
+            <div>
+              <dt>For extension workers</dt>
+              <dd>
+                Review the evidence, explore weather changes and save a report to discuss together.
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </section>
       <section id="how-it-works" className="experience-section">
         <div className="experience-copy">
           <p className="chapter">
@@ -125,7 +159,10 @@ export default function Welcome({
               <span>01</span>
               <div>
                 <h3>Choose your area.</h3>
-                <p>Select your state and LGA. See whether local records are available.</p>
+                <p>
+                  Select your state and LGA. We check the available records and take you to your
+                  crop history.
+                </p>
               </div>
             </li>
             <li>
@@ -161,12 +198,13 @@ export default function Welcome({
               place={{ state: 'Kaduna', lga: 'Kajuru' }}
               availability="Checked after area selection"
             />
-            <div className="preview-next" aria-hidden="true">
-              Continue
-              <ArrowRight size={18} />
-            </div>
+            <p className="preview-confirmation">Area confirmed. Next: what you grew before.</p>
           </div>
-          <figcaption>Interface preview. Example location; no farm advice is shown.</figcaption>
+          <figcaption>
+            <strong>A maize field in Kajuru</strong>Example journey: choose Kajuru, add maize from
+            last season, then compare rotation options and open their evidence with your agent. This
+            preview shows the process, not a recommendation for a real farm.
+          </figcaption>
         </figure>
       </section>
       {ready && questions && (

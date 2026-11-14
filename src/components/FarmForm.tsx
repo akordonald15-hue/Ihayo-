@@ -49,7 +49,6 @@ export function PlaceForm({
   const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
   const [debounced, setDebounced] = useState('');
-  const [located, setLocated] = useState<SearchPlace | null>(null);
   const [locating, setLocating] = useState(false);
   const [map, setMap] = useState(false);
   const attempt = useRef(0);
@@ -84,14 +83,12 @@ export function PlaceForm({
     setFilter('');
     setSearch('');
     setDebounced('');
-    setLocated(null);
     setLocating(false);
     setMap(false);
     onError('');
   }
   function select(place: SearchPlace | (Place & { ready: boolean })) {
     attempt.current++;
-    setLocated(null);
     setSearch('');
     setDebounced('');
     setFilter('');
@@ -115,18 +112,22 @@ export function PlaceForm({
     navigator.geolocation.getCurrentPosition(
       async (p) => {
         try {
+          if (version !== attempt.current) return;
+          if (!Number.isFinite(p.coords.latitude) || !Number.isFinite(p.coords.longitude)) {
+            throw new Error(ui.geoError);
+          }
           const place = await client.locate(p.coords.latitude, p.coords.longitude);
-          if (version === attempt.current) setLocated(place);
+          if (version === attempt.current) select(place);
         } catch (e) {
           if (version === attempt.current) onError((e as Error).message);
         } finally {
           if (version === attempt.current) setLocating(false);
         }
       },
-      () => {
+      (error) => {
         if (version === attempt.current) {
           setLocating(false);
-          onError(ui.geoError);
+          onError(error.code === 1 ? ui.geoDenied : error.code === 3 ? ui.geoTimeout : ui.geoError);
         }
       },
       { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 },
@@ -138,7 +139,7 @@ export function PlaceForm({
         place={draft}
         availability={
           pending
-            ? 'Checking nearby records…'
+            ? 'Checking records for your area…'
             : locationReady
               ? draft.use_data_from
                 ? 'Nearby records selected'
@@ -303,27 +304,15 @@ export function PlaceForm({
             Find your area using this device
           </h2>
           <p>
-            Your browser will ask permission to share your approximate location. Check the suggested
-            LGA before using it.
+            Your browser will ask to share this device's location with the advice service to find
+            your LGA. Use this only while you are near your farm. You can change the area
+            afterwards.
           </p>
-          {!located && (
-            <button className="button secondary" onClick={locate} disabled={locating}>
-              <LocateFixed size={19} />
-              {ui.useLocation}
-            </button>
-          )}
+          <button className="button secondary" onClick={locate} disabled={locating}>
+            <LocateFixed size={19} />
+            {ui.useLocation}
+          </button>
           {locating && <Busy />}
-          {located && (
-            <div className="notice">
-              <h3>
-                {located.lga}, {located.state}
-              </h3>
-              <p>{ui.locationConfirm}</p>
-              <button className="button" onClick={() => select(located)}>
-                {ui.confirmLocation}
-              </button>
-            </div>
-          )}
         </>
       )}
       <div className="location-alternatives">

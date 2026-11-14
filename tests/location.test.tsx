@@ -97,7 +97,7 @@ it('keeps unavailable data unconfirmed and search isolated from the primary sele
   await u.click(await screen.findByRole('button', { name: 'Kajuru, Kaduna Data available' }));
   expect(screen.getByRole('region', { name: 'Your farm location' })).toHaveTextContent('Kajuru');
 });
-it('requires geolocation confirmation and ignores a late response after changing method', async () => {
+it('selects resolved geolocation automatically and ignores a late response after changing method', async () => {
   const u = userEvent.setup();
   const { client } = setup();
   const locate = vi.spyOn(client, 'locate').mockResolvedValue({
@@ -121,8 +121,6 @@ it('requires geolocation confirmation and ignores a late response after changing
     await act(async () =>
       callbacks[0]({ coords: { latitude: 10, longitude: 7 } } as GeolocationPosition),
     );
-    expect(screen.queryByRole('region', { name: 'Your farm location' })).not.toBeInTheDocument();
-    await u.click(screen.getByRole('button', { name: 'Confirm this area' }));
     expect(screen.getByRole('region', { name: 'Your farm location' })).toHaveTextContent('Kajuru');
     await u.click(screen.getByRole('button', { name: 'Change location' }));
     await u.click(screen.getByRole('button', { name: 'Use device location' }));
@@ -131,7 +129,7 @@ it('requires geolocation confirmation and ignores a late response after changing
     await act(async () =>
       callbacks[1]({ coords: { latitude: 10, longitude: 7 } } as GeolocationPosition),
     );
-    await waitFor(() => expect(locate).toHaveBeenCalledTimes(2));
+    await waitFor(() => expect(locate).toHaveBeenCalledTimes(1));
     expect(screen.queryByRole('button', { name: 'Confirm this area' })).not.toBeInTheDocument();
     expect(screen.getByRole('heading', { name: 'Choose a state' })).toBeVisible();
   } finally {

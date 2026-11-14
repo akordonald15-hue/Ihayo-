@@ -53,7 +53,7 @@ describe('complete farmer flow', () => {
     expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Birnin Gwari No data yet' }));
     await user.click(await screen.findByRole('button', { name: 'Use this area’s data' }));
-    await user.click(screen.getByRole('button', { name: 'Continue' }));
+    await screen.findByRole('button', { name: 'Maize' }, { timeout: 3000 });
     await user.click(screen.getByRole('button', { name: 'Back' }));
     expect(screen.getByRole('region', { name: 'Your farm location' })).toHaveTextContent(
       'Birnin Gwari',
@@ -76,7 +76,7 @@ describe('complete farmer flow', () => {
     expect(
       screen.getByRole('heading', { name: 'Does this look like your farm?' }),
     ).toBeInTheDocument();
-    await user.click(screen.getByRole('button', { name: 'Get my advice' }));
+    await user.click(screen.getByRole('button', { name: 'See your planting options' }));
     expect(screen.getByRole('progressbar')).not.toHaveAttribute('aria-valuenow');
     await screen.findByRole(
       'heading',

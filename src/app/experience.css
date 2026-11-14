@@ -661,3 +661,86 @@
     gap: 2px;
   }
 }
+
+/* Clear farmer tasks and a concise problem-to-use narrative. */
+.farming-context {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(32px, 6vw, 110px);
+  padding: clamp(56px, 7vw, 112px) var(--gutter) 24px;
+}
+.farming-context h2 {
+  font-size: clamp(2rem, 3.5vw, 4rem);
+  line-height: 1.12;
+  max-width: 20ch;
+  text-wrap: balance;
+}
+.farming-context p {
+  max-width: 62ch;
+  line-height: 1.7;
+}
+.farming-context-details {
+  align-self: center;
+}
+.people-ledger {
+  display: grid;
+  gap: 24px;
+  margin-top: 32px;
+}
+.people-ledger div {
+  border-top: 1px solid #d9ded5;
+  padding-top: 20px;
+}
+.people-ledger dt {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--green, #245a43);
+}
+.people-ledger dd {
+  margin: 0;
+  max-width: 58ch;
+  line-height: 1.65;
+}
+.journey-preview figcaption strong {
+  display: block;
+  color: #071d2d;
+  margin-bottom: 8px;
+}
+.preview-confirmation,
+.location-success {
+  color: #245a43;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.location-success {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 16px 0;
+}
+.location-success svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+.question-count {
+  color: #245a43;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.form-main > .profile-card {
+  margin-top: 40px;
+}
+@media (max-width: 767px) {
+  .farming-context {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .farming-context h2 {
+    max-width: 24ch;
+  }
+  .form-top .eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    text-align: right;
+  }
+}
