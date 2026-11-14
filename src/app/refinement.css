@@ -1,8 +1,7 @@
 /* Shared alignment and responsive finishing layer. Existing photography and brand stay intact. */
 :root {
-  --page-width: 1280px;
-  --gutter: clamp(24px, 4vw, 60px);
-  --page-edge: max(var(--gutter), calc((100vw - var(--page-width)) / 2));
+  --gutter: clamp(40px, 3.333vw, 64px);
+  --page-edge: var(--gutter);
   --radius-control: 12px;
   --radius-card: 16px;
   --radius-panel: 24px;
@@ -39,6 +38,7 @@ select {
   line-height: 1.04;
 }
 .hero-baseline {
+  inset-inline: 0;
   max-width: none;
   margin-inline: var(--page-edge);
 }
@@ -51,7 +51,7 @@ select {
 .site-footer,
 .results {
   width: calc(100% - var(--page-edge) * 2);
-  max-width: var(--page-width);
+  max-width: none;
   margin-inline: auto;
 }
 .how-section {
@@ -87,7 +87,7 @@ select {
   margin-bottom: 0;
 }
 .ground-section {
-  max-width: var(--page-width);
+  max-width: none;
   width: calc(100% - var(--page-edge) * 2);
   margin-inline: auto;
   border-radius: 28px;
@@ -109,7 +109,7 @@ select {
 }
 .closing-photo {
   width: calc(100% - var(--page-edge) * 2);
-  max-width: var(--page-width);
+  max-width: none;
   margin: clamp(40px, 5vw, 72px) auto;
   border-radius: 28px;
 }
@@ -125,7 +125,9 @@ select {
   max-width: 42ch;
 }
 .form-shell {
-  max-width: calc(var(--page-width) + var(--gutter) * 2);
+  width: calc(100% - var(--page-edge) * 2);
+  max-width: none;
+  margin-inline: auto;
 }
 .form-main {
   min-width: 0;
@@ -338,7 +340,7 @@ select,
 }
 @media (max-width: 600px) {
   :root {
-    --gutter: 24px;
+    --gutter: 20px;
   }
   .cinema-content h1 {
     font-size: clamp(49px, 13vw, 66px);
@@ -358,7 +360,7 @@ select,
     min-width: 0;
   }
   .ground-copy {
-    padding: 28px 24px;
+    padding: 28px var(--gutter);
   }
   .soil-photograph {
     min-height: 290px;
@@ -367,7 +369,7 @@ select,
     min-height: 460px;
   }
   .closing-photo > div {
-    padding: 32px 24px;
+    padding: 32px var(--gutter);
   }
   .closing-photo:before {
     background: linear-gradient(90deg, #071d2de6, #071d2d66);
@@ -385,6 +387,55 @@ select,
   }
   .form-main {
     padding-inline: var(--gutter);
+  }
+}
+/* Page panels expand; text measures stay deliberate. */
+.result-section > .lines,
+.result-section > p,
+.intro-advice .lines,
+.server-introduction .lines,
+.ground-copy > p,
+.principle-lines p {
+  max-width: 65ch;
+}
+.editorial-section-heading > p:last-child {
+  max-width: 48ch;
+}
+.image-credits p:first-child {
+  max-width: 76ch;
+}
+@media (min-width: 801px) {
+  .cinema-hero {
+    min-height: max(700px, calc(100svh - 96px));
+    display: flex;
+    align-items: center;
+  }
+  .cinema-content {
+    width: 100%;
+    margin: 0;
+    padding-block: 56px 120px;
+  }
+  .cinema-content h1 {
+    max-width: min(8.8em, 52vw);
+  }
+  .hero-subtitle,
+  .hero-description,
+  .hero-privacy {
+    max-width: min(52ch, 48vw);
+  }
+  .hero-shade {
+    background:
+      linear-gradient(90deg, #041622d4 0%, #0416228c 42%, #04162210 73%),
+      linear-gradient(0deg, #041622cf, transparent 40%);
+  }
+  .ground-copy {
+    padding: clamp(36px, 4vw, 72px);
+  }
+}
+@media (max-width: 800px) {
+  .form-shell {
+    width: 100%;
+    margin-inline: 0;
   }
 }
 @media (prefers-reduced-motion: reduce) {

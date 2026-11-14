@@ -49,6 +49,6 @@ The original contour/seed symbol and optically spaced outlined IHAYO wordmark no
 
 ## November 14 responsive finishing pass
 
-`src/app/refinement.css` is the final finishing layer after premium.css and brand.css. Shared content width is 1280px; responsive gutters are 24px mobile, 32px tablet and fluid up to 60px desktop. Full-width hero imagery remains cinematic. Control radius 12px, card 16px, feature panel 24-28px. Headings use clamp, balanced natural wrapping and no homepage manual line breaks. Long backend questions expand without clipping.
+`src/app/refinement.css` is the final finishing layer after premium.css and brand.css. Page panels use the available viewport width with consistent gutters: 20px mobile, 32px tablet, and 40-64px desktop (48px at 1440px, 64px at 1920px). Headline and paragraph measures remain controlled independently of the full-width panels. Full-width hero imagery remains cinematic. Control radius 12px, card 16px, feature panel 24-28px. Headings use clamp, balanced natural wrapping and no homepage manual line breaks. Long backend questions expand without clipping.
 
 Motion uses lightweight CSS and IntersectionObserver, with 180-200ms controls and 450ms editorial reveals. Only UI-owned homepage editorial content is observed; server welcome, advice, warnings and uncertainty remain outside reveal wrappers. Reduced-motion CSS reveals content immediately and disables animation, transitions and smooth scrolling. No new animation dependency was added.
