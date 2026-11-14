@@ -130,3 +130,76 @@
     display: none;
   }
 }
+/* Centre the complete hero story while retaining its photographic scenes. */
+.landing-v2 .cinema-content {
+  width: 100%;
+  text-align: center;
+}
+.landing-v2 .cinema-content h1 {
+  max-width: min(16ch, 100%);
+  margin-inline: auto;
+}
+.landing-v2 .hero-description {
+  max-width: min(48ch, 100%);
+  margin-inline: auto;
+}
+.landing-v2 .hero-actions,
+.landing-v2 .hero-privacy {
+  justify-content: center;
+}
+.landing-v2 .hero-privacy {
+  margin-inline: auto;
+}
+.landing-v2 .hero-baseline {
+  justify-content: center;
+  text-align: center;
+}
+.landing-v2 .hero-baseline > a {
+  position: absolute;
+  right: 0;
+}
+.landing-v2 .hero-shade {
+  background: linear-gradient(180deg, #071d2d60, #071d2d95 42%, #071d2de6);
+}
+@media (max-width: 600px) {
+  .landing-v2 .cinema-content h1 {
+    max-width: 12ch;
+  }
+  .landing-v2 .hero-actions {
+    align-items: center;
+  }
+  .landing-v2 .hero-actions .button {
+    width: 100%;
+    justify-content: center;
+  }
+  .landing-v2 .hero-privacy {
+    max-width: 32ch;
+  }
+  .landing-v2 .hero-baseline {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .landing-v2 .hero-baseline > span {
+    max-width: none;
+  }
+  .landing-v2 .hero-baseline > a {
+    position: static;
+    max-width: none;
+  }
+  .landing-v2 .hero-shade {
+    background: linear-gradient(180deg, #071d2d0d, #071d2d66 22%, #071d2df5 48%, #071d2d 68%);
+  }
+}
+.landing-v2 .cinema-content > .eyebrow {
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+}
+.landing-v2 .hero-baseline {
+  align-items: center;
+}
+@media (max-width: 600px) {
+  .landing-v2 .hero-secondary {
+    align-self: center;
+  }
+}
