@@ -144,7 +144,7 @@ export function PlaceForm({
               ? draft.use_data_from
                 ? 'Nearby records selected'
                 : 'Available'
-              : 'Not available for this area'
+              : 'Records not confirmed for this area'
         }
         onChange={changeState}
         focusOnMount

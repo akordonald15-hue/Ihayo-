@@ -142,6 +142,7 @@ function Experience() {
   const cancelLocationAdvance = () => {
     selectionVersion.current++;
     setLocationConfirmation(null);
+    setPending(false);
   };
   const update = (patch: Partial<Draft>) => {
     setError('');

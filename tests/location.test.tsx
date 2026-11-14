@@ -86,7 +86,7 @@ it('keeps unavailable data unconfirmed and search isolated from the primary sele
   const { client } = setup();
   await u.click(screen.getByRole('button', { name: /Kaduna 1\/2/ }));
   await u.click(await screen.findByRole('button', { name: 'Birnin Gwari No data yet' }));
-  expect(screen.getByText('Not available for this area')).toBeVisible();
+  expect(screen.getByText('Records not confirmed for this area')).toBeVisible();
   await u.click(screen.getByRole('button', { name: 'Change location' }));
   vi.spyOn(client, 'search').mockResolvedValue([
     { state: 'Kaduna', lga: 'Kajuru', ready: true, zone: 'North West' },

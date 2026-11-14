@@ -135,3 +135,16 @@ it('does not navigate after validation fails and lets the farmer change location
   await u.click(screen.getByRole('button', { name: 'Change location' }));
   await waitFor(() => expect(screen.getByRole('button', { name: /Kaduna 2\/3/ })).toBeVisible());
 });
+
+it('clears loading when Back cancels slow validation, without accepting its late response', async () => {
+  const validation = deferred<Area[]>();
+  const u = await start(validation.promise);
+  await selectKajuru(u);
+  await u.click(screen.getByRole('button', { name: 'Back' }));
+  await u.click(screen.getAllByRole('button', { name: 'Explore your land' })[0]);
+  expect(screen.queryByText(/Checking records for your area/)).not.toBeInTheDocument();
+  expect(screen.getByText('Records not confirmed for this area')).toBeVisible();
+  await act(async () => validation.resolve([{ lga: 'Kajuru', ready: true, lat: 10, lon: 7 }]));
+  expect(screen.getByRole('button', { name: 'Continue' })).toBeDisabled();
+  expect(screen.queryByText(/confirmed. Next/)).not.toBeInTheDocument();
+});
