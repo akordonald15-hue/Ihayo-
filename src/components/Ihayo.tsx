@@ -344,9 +344,12 @@ function Experience() {
               </div>
               {step === 0 ? (
                 <>
-                  <h1 tabIndex={-1}>{question('state')!.text}</h1>
+                  <h1 tabIndex={-1}>Where is your farm?</h1>
                   <p className="form-description">{ui.locationIntro}</p>
                   <PlaceForm
+                    stateQuestion={question('state')!.text}
+                    locationReady={locationReady}
+                    pending={pending}
                     areaQuestion={question('lga')!.text.replace('{state}', draft.state)}
                     client={client}
                     draft={draft}
@@ -395,14 +398,16 @@ function Experience() {
                       {ui.dataFrom}: {draft.use_data_from.lga}, {draft.use_data_from.state}
                     </p>
                   )}
-                  <button
-                    className="button primary form-next"
-                    disabled={!locationReady || !draft.lga || !!nearest || pending}
-                    onClick={() => setStep(1)}
-                  >
-                    {ui.next}
-                    <ArrowRight size={18} />
-                  </button>
+                  {draft.lga && (
+                    <button
+                      className="button primary form-next"
+                      disabled={!locationReady || !draft.lga || !!nearest || pending}
+                      onClick={() => setStep(1)}
+                    >
+                      Continue
+                      <ArrowRight size={18} />
+                    </button>
+                  )}
                 </>
               ) : step === 1 ? (
                 <>

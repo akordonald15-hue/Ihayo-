@@ -20,6 +20,7 @@ import { fieldKeys } from '@/lib/types';
 import { ui } from '@/lib/copy';
 import { Busy, ErrorBox, Lines } from './shared';
 import AreaMap from './AreaMap';
+import FarmLocationSummary from './FarmLocationSummary';
 import CropBotanical from './CropBotanical';
 export function PlaceForm({
   client,
@@ -28,7 +29,10 @@ export function PlaceForm({
   choose,
   update,
   onError,
+  stateQuestion,
   areaQuestion,
+  locationReady,
+  pending,
 }: {
   client: Client;
   draft: Draft;
@@ -36,175 +40,183 @@ export function PlaceForm({
   choose: (p: Place, ready: boolean) => Promise<void>;
   update: (d: Partial<Draft>) => void;
   onError: (s: string) => void;
+  stateQuestion?: string;
   areaQuestion?: string;
+  locationReady: boolean;
+  pending: boolean;
 }) {
-  const [stateFilter, setStateFilter] = useState('');
-  const [areaFilter, setAreaFilter] = useState('');
+  const [mode, setMode] = useState<'browse' | 'search' | 'geo'>('browse');
+  const [filter, setFilter] = useState('');
   const [search, setSearch] = useState('');
   const [debounced, setDebounced] = useState('');
   const [located, setLocated] = useState<SearchPlace | null>(null);
   const [locating, setLocating] = useState(false);
   const [map, setMap] = useState(false);
+  const attempt = useRef(0);
+  const stageHeading = useRef<HTMLHeadingElement>(null);
   const list = useQuery({
     queryKey: ['areas', client.fixture, draft.state],
     queryFn: () => client.areas(draft.state),
-    enabled: !!draft.state,
+    enabled: mode === 'browse' && !!draft.state && !draft.lga,
     staleTime: Infinity,
   });
   useEffect(() => {
     const timer = setTimeout(() => setDebounced(search.trim()), 350);
     return () => clearTimeout(timer);
   }, [search]);
+  useEffect(
+    () => () => {
+      attempt.current++;
+    },
+    [],
+  );
+  useEffect(() => {
+    stageHeading.current?.focus();
+  }, [draft.state, draft.lga, mode]);
   const results = useQuery({
     queryKey: ['search', client.fixture, debounced],
     queryFn: () => client.search(debounced),
-    enabled: debounced.length >= 2,
+    enabled: mode === 'search' && debounced.length >= 2 && !draft.lga,
   });
-  async function locate() {
+  function switchMode(next: typeof mode) {
+    attempt.current++;
+    setMode(next);
+    setFilter('');
+    setSearch('');
+    setDebounced('');
+    setLocated(null);
+    setLocating(false);
+    setMap(false);
+    onError('');
+  }
+  function select(place: SearchPlace | (Place & { ready: boolean })) {
+    attempt.current++;
+    setLocated(null);
+    setSearch('');
+    setDebounced('');
+    setFilter('');
+    setMap(false);
+    setMode('browse');
+    setLocating(false);
+    void choose({ state: place.state, lga: place.lga }, place.ready);
+  }
+  function changeState() {
+    switchMode('browse');
+    update({ state: '', lga: '', use_data_from: null });
+  }
+  function locate() {
     onError('');
     if (!navigator.geolocation) {
       onError(ui.noGeo);
       return;
     }
+    const version = ++attempt.current;
     setLocating(true);
     navigator.geolocation.getCurrentPosition(
       async (p) => {
         try {
           const place = await client.locate(p.coords.latitude, p.coords.longitude);
-          setLocated(place);
+          if (version === attempt.current) setLocated(place);
         } catch (e) {
-          onError((e as Error).message);
+          if (version === attempt.current) onError((e as Error).message);
         } finally {
-          setLocating(false);
+          if (version === attempt.current) setLocating(false);
         }
       },
       () => {
-        setLocating(false);
-        onError(ui.geoError);
+        if (version === attempt.current) {
+          setLocating(false);
+          onError(ui.geoError);
+        }
       },
       { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 },
     );
   }
+  if (draft.lga)
+    return (
+      <FarmLocationSummary
+        place={draft}
+        availability={
+          pending
+            ? 'Checking nearby records…'
+            : locationReady
+              ? draft.use_data_from
+                ? 'Nearby records selected'
+                : 'Available'
+              : 'Not available for this area'
+        }
+        onChange={changeState}
+        focusOnMount
+      />
+    );
   return (
-    <>
-      <div className="place-tools">
-        <label className="search-box">
-          <Search size={19} />
-          <input
-            type="search"
-            placeholder={ui.placeSearch}
-            aria-label={ui.placeSearch}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </label>
-        <button className="text-button" onClick={() => void locate()} disabled={locating}>
-          <LocateFixed size={19} />
-          {ui.useLocation}
+    <div className="progressive-location">
+      {mode !== 'browse' && (
+        <button className="text-button" onClick={() => switchMode('browse')}>
+          {draft.state ? 'Back to LGA selection' : 'Choose a state instead'}
         </button>
-      </div>
-      {search.length > 0 && search.trim().length < 2 && <p>{ui.searchHint}</p>}
-      {debounced.length >= 2 && search && (
-        <div className="search-results">
-          {results.isPending ? (
-            <Busy />
-          ) : results.error ? (
-            <ErrorBox message={results.error.message} retry={() => void results.refetch()} />
-          ) : !results.data?.length ? (
-            <p>{ui.empty}</p>
-          ) : (
-            results.data.map((p) => (
-              <button
-                key={p.state + p.lga}
-                onClick={() => {
-                  void choose(p, p.ready);
-                  setSearch('');
-                  setDebounced('');
-                }}
-              >
-                <span>
-                  {p.lga}, {p.state}
-                </span>
-                <small>{p.ready ? ui.ready : ui.notReady}</small>
+      )}
+      {mode === 'browse' ? (
+        <>
+          {draft.state && (
+            <div className="selected-state">
+              <span>
+                State <strong>{draft.state}</strong>
+              </span>
+              <button className="text-button" onClick={changeState}>
+                Change state
               </button>
-            ))
+            </div>
           )}
-        </div>
-      )}
-      {locating && <Busy />}
-      {located && (
-        <div className="notice">
-          <h2>
-            {located.lga}, {located.state}
+          <h2 ref={stageHeading} tabIndex={-1}>
+            {draft.state ? (areaQuestion ?? ui.areaSearch) : (stateQuestion ?? ui.stateSearch)}
           </h2>
-          <p>{ui.locationConfirm}</p>
-          <button
-            className="button"
-            onClick={() => {
-              void choose(located, located.ready);
-              setLocated(null);
-            }}
-          >
-            {ui.confirmLocation}
-          </button>
-        </div>
-      )}
-      <div className="location-grid">
-        <div>
-          <label htmlFor="state-filter">{ui.stateSearch}</label>
+          <label className="location-filter" htmlFor="location-filter">
+            {draft.state ? ui.areaSearch : ui.stateSearch}
+          </label>
           <input
-            id="state-filter"
-            value={stateFilter}
-            onChange={(e) => setStateFilter(e.target.value)}
+            id="location-filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
             placeholder={ui.searchPlaceholder}
           />
-          <div className="selection-list" role="group" aria-label={ui.stateSearch}>
-            {states
-              .filter((s) => s.state.toLowerCase().includes(stateFilter.toLowerCase()))
-              .map((s) => (
-                <button
-                  key={s.state}
-                  className={s.state === draft.state ? 'selected' : ''}
-                  aria-pressed={s.state === draft.state}
-                  onClick={() => {
-                    update({ state: s.state, lga: '', use_data_from: null });
-                    setAreaFilter('');
-                  }}
-                >
-                  <span>
-                    {s.state}
-                    <small>
-                      {s.areas_ready}/{s.areas} {ui.serviceCoverage}
-                    </small>
-                  </span>
-                  {s.state === draft.state ? <Check size={19} /> : <ArrowRight size={17} />}
-                </button>
-              ))}
-          </div>
-        </div>
-        {draft.state && (
-          <div>
-            <label htmlFor="area-filter">{areaQuestion ?? ui.areaSearch}</label>
-            <input
-              id="area-filter"
-              value={areaFilter}
-              onChange={(e) => setAreaFilter(e.target.value)}
-              placeholder={ui.searchPlaceholder}
-            />
-            <div className="selection-list" role="group" aria-label={ui.areaSearch}>
-              {list.isPending ? (
-                <Busy />
-              ) : list.error ? (
-                <ErrorBox message={list.error.message} retry={() => void list.refetch()} />
-              ) : (
-                list.data
-                  ?.filter((a) => a.lga.toLowerCase().includes(areaFilter.toLowerCase()))
+          <div
+            className="selection-list"
+            role="group"
+            aria-label={draft.state ? ui.areaSearch : ui.stateSearch}
+          >
+            {!draft.state ? (
+              states
+                .filter((s) => s.state.toLowerCase().includes(filter.toLowerCase()))
+                .map((s) => (
+                  <button
+                    key={s.state}
+                    onClick={() => {
+                      update({ state: s.state, lga: '', use_data_from: null });
+                      setFilter('');
+                    }}
+                  >
+                    <span>
+                      {s.state}
+                      <small>
+                        {s.areas_ready}/{s.areas} {ui.serviceCoverage}
+                      </small>
+                    </span>
+                    <ArrowRight size={17} />
+                  </button>
+                ))
+            ) : list.isPending ? (
+              <Busy />
+            ) : list.error ? (
+              <ErrorBox message={list.error.message} retry={() => void list.refetch()} />
+            ) : (
+              <>
+                {list.data
+                  ?.filter((a) => a.lga.toLowerCase().includes(filter.toLowerCase()))
                   .map((a) => (
                     <button
                       key={a.lga}
-                      className={a.lga === draft.lga ? 'selected' : ''}
-                      aria-pressed={a.lga === draft.lga}
-                      onClick={() => void choose({ state: draft.state, lga: a.lga }, a.ready)}
+                      onClick={() => select({ state: draft.state, lga: a.lga, ready: a.ready })}
                     >
                       <span>
                         {a.lga}
@@ -212,36 +224,124 @@ export function PlaceForm({
                           {a.ready ? ui.ready : ui.notReady}
                         </small>
                       </span>
-                      {a.lga === draft.lga ? <Check size={19} /> : <ArrowRight size={17} />}
+                      <ArrowRight size={17} />
                     </button>
-                  ))
+                  ))}
+                {!list.data?.some((a) => a.lga.toLowerCase().includes(filter.toLowerCase())) && (
+                  <p>{ui.empty}</p>
+                )}
+              </>
+            )}
+          </div>
+          {!draft.state &&
+            !states.some((s) => s.state.toLowerCase().includes(filter.toLowerCase())) && (
+              <p>{ui.empty}</p>
+            )}
+          {draft.state && (
+            <>
+              <button
+                className="text-button map-toggle"
+                aria-expanded={map}
+                onClick={() => setMap((v) => !v)}
+              >
+                <MapPin size={18} />
+                {ui.map}
+                <ChevronDown size={16} />
+              </button>
+              {map && (
+                <AreaMap
+                  client={client}
+                  place={draft}
+                  from={draft.use_data_from}
+                  onSelect={(p, ready) => select({ ...p, ready })}
+                />
+              )}
+            </>
+          )}
+        </>
+      ) : mode === 'search' ? (
+        <>
+          <h2 ref={stageHeading} tabIndex={-1}>
+            Search for your LGA
+          </h2>
+          <p>Search by area name, then confirm the matching state and LGA.</p>
+          <label className="search-box">
+            <Search size={19} />
+            <input
+              type="search"
+              placeholder={ui.placeSearch}
+              aria-label={ui.placeSearch}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </label>
+          {search.length > 0 && search.trim().length < 2 && <p>{ui.searchHint}</p>}
+          {debounced.length >= 2 && search && (
+            <div className="search-results">
+              {results.isPending ? (
+                <Busy />
+              ) : results.error ? (
+                <ErrorBox message={results.error.message} retry={() => void results.refetch()} />
+              ) : !results.data?.length ? (
+                <p>{ui.empty}</p>
+              ) : (
+                results.data.map((p) => (
+                  <button key={p.state + p.lga} onClick={() => select(p)}>
+                    <span>
+                      {p.lga}, {p.state}
+                    </span>
+                    <small>{p.ready ? ui.ready : ui.notReady}</small>
+                  </button>
+                ))
               )}
             </div>
-          </div>
-        )}
-      </div>
-      {draft.state && (
+          )}
+        </>
+      ) : (
         <>
-          <button
-            className="text-button map-toggle"
-            aria-expanded={map}
-            onClick={() => setMap((v) => !v)}
-          >
-            <MapPin size={18} />
-            {ui.map}
-            <ChevronDown size={16} />
-          </button>
-          {map && (
-            <AreaMap
-              client={client}
-              place={draft}
-              from={draft.use_data_from}
-              onSelect={(p, ready) => void choose(p, ready)}
-            />
+          <h2 ref={stageHeading} tabIndex={-1}>
+            Find your area using this device
+          </h2>
+          <p>
+            Your browser will ask permission to share your approximate location. Check the suggested
+            LGA before using it.
+          </p>
+          {!located && (
+            <button className="button secondary" onClick={locate} disabled={locating}>
+              <LocateFixed size={19} />
+              {ui.useLocation}
+            </button>
+          )}
+          {locating && <Busy />}
+          {located && (
+            <div className="notice">
+              <h3>
+                {located.lga}, {located.state}
+              </h3>
+              <p>{ui.locationConfirm}</p>
+              <button className="button" onClick={() => select(located)}>
+                {ui.confirmLocation}
+              </button>
+            </div>
           )}
         </>
       )}
-    </>
+      <div className="location-alternatives">
+        <span>Another way to find your farm</span>
+        {mode !== 'search' && (
+          <button className="text-button" onClick={() => switchMode('search')}>
+            <Search size={17} />
+            Search by area name
+          </button>
+        )}
+        {mode !== 'geo' && (
+          <button className="text-button" onClick={() => switchMode('geo')}>
+            <LocateFixed size={17} />
+            Use device location
+          </button>
+        )}
+      </div>
+    </div>
   );
 }
 export function ProfileCard({ client, draft }: { client: Client; draft: Draft }) {

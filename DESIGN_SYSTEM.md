@@ -52,3 +52,10 @@ The original contour/seed symbol and optically spaced outlined IHAYO wordmark no
 `src/app/refinement.css` is the final finishing layer after premium.css and brand.css. Page panels use the available viewport width with consistent gutters: 20px mobile, 32px tablet, and 40-64px desktop (48px at 1440px, 64px at 1920px). Headline and paragraph measures remain controlled independently of the full-width panels. Full-width hero imagery remains cinematic. Control radius 12px, card 16px, feature panel 24-28px. Headings use clamp, balanced natural wrapping and no homepage manual line breaks. Long backend questions expand without clipping.
 
 Motion uses lightweight CSS and IntersectionObserver, with 180-200ms controls and 450ms editorial reveals. Only UI-owned homepage editorial content is observed; server welcome, advice, warnings and uncertainty remain outside reveal wrappers. Reduced-motion CSS reveals content immediately and disables animation, transitions and smooth scrolling. No new animation dependency was added.
+
+
+## Product narrative and progressive location selection
+
+`experience.css` follows the shared refinement layer. It styles a photographic opening, an editorial process beside a labelled preview of the real location card, an evidence/source ledger and a plain closing invitation. The farmer image appears once. The preview contains no agricultural advice or fabricated scientific values.
+
+Location selection shows one primary stage at a time: state, LGA, confirmation. Alternative search/device-location screens replace the primary controls. The summary shares a presentational component with the landing preview, uses API-confirmed availability in the real journey and keeps unavailable-data consent outside the card. Scientific warnings remain verbatim and outside decorative animation wrappers.

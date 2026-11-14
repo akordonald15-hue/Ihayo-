@@ -44,16 +44,22 @@ describe('complete farmer flow', () => {
     const user = userEvent.setup();
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('backend pending'));
     render(<Ihayo />);
-    await user.click(await screen.findByRole('button', { name: 'Explore demonstration' }));
+    await user.click((await screen.findAllByRole('button', { name: 'Explore demonstration' }))[0]);
     await screen.findByRole('heading', { name: 'In which state is your farm?' });
-    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: /Kaduna 2\/3/ }));
     await user.click(await screen.findByRole('button', { name: 'Birnin Gwari No data yet' }));
     await user.click(await screen.findByRole('button', { name: 'Choose another area' }));
-    expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: 'Continue' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Birnin Gwari No data yet' }));
     await user.click(await screen.findByRole('button', { name: 'Use this area’s data' }));
-    await user.click(screen.getByRole('button', { name: 'Next' }));
+    await user.click(screen.getByRole('button', { name: 'Continue' }));
+    await user.click(screen.getByRole('button', { name: 'Back' }));
+    expect(screen.getByRole('region', { name: 'Your farm location' })).toHaveTextContent(
+      'Birnin Gwari',
+    );
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Continue' }));
     await user.click(screen.getByRole('button', { name: 'Maize' }));
     await user.click(screen.getByRole('button', { name: 'Cowpea (beans)' }));
     await user.click(screen.getByRole('button', { name: 'Next' }));
