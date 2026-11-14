@@ -1,0 +1,530 @@
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import {
+  ArrowRight,
+  Check,
+  ChevronDown,
+  Leaf,
+  LocateFixed,
+  MapPin,
+  Plus,
+  Search,
+  Sprout,
+  Sun,
+  Wheat,
+  X,
+} from 'lucide-react';
+import { Client } from '@/lib/api';
+import { sameCrop, toggleCrop } from '@/lib/model';
+import type { Draft, Nearest, Place, Questions, SearchPlace, State } from '@/lib/types';
+import { fieldKeys } from '@/lib/types';
+import { ui } from '@/lib/copy';
+import { Busy, ErrorBox, Lines } from './shared';
+import AreaMap from './AreaMap';
+export function PlaceForm({
+  client,
+  draft,
+  states,
+  choose,
+  update,
+  onError,
+  areaQuestion,
+}: {
+  client: Client;
+  draft: Draft;
+  states: State[];
+  choose: (p: Place, ready: boolean) => Promise<void>;
+  update: (d: Partial<Draft>) => void;
+  onError: (s: string) => void;
+  areaQuestion?: string;
+}) {
+  const [stateFilter, setStateFilter] = useState('');
+  const [areaFilter, setAreaFilter] = useState('');
+  const [search, setSearch] = useState('');
+  const [debounced, setDebounced] = useState('');
+  const [located, setLocated] = useState<SearchPlace | null>(null);
+  const [locating, setLocating] = useState(false);
+  const [map, setMap] = useState(false);
+  const list = useQuery({
+    queryKey: ['areas', client.fixture, draft.state],
+    queryFn: () => client.areas(draft.state),
+    enabled: !!draft.state,
+    staleTime: Infinity,
+  });
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounced(search.trim()), 350);
+    return () => clearTimeout(timer);
+  }, [search]);
+  const results = useQuery({
+    queryKey: ['search', client.fixture, debounced],
+    queryFn: () => client.search(debounced),
+    enabled: debounced.length >= 2,
+  });
+  async function locate() {
+    onError('');
+    if (!navigator.geolocation) {
+      onError(ui.noGeo);
+      return;
+    }
+    setLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (p) => {
+        try {
+          const place = await client.locate(p.coords.latitude, p.coords.longitude);
+          setLocated(place);
+        } catch (e) {
+          onError((e as Error).message);
+        } finally {
+          setLocating(false);
+        }
+      },
+      () => {
+        setLocating(false);
+        onError(ui.geoError);
+      },
+      { enableHighAccuracy: false, timeout: 15000, maximumAge: 0 },
+    );
+  }
+  return (
+    <>
+      <div className="place-tools">
+        <label className="search-box">
+          <Search size={19} />
+          <input
+            type="search"
+            placeholder={ui.placeSearch}
+            aria-label={ui.placeSearch}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </label>
+        <button className="text-button" onClick={() => void locate()} disabled={locating}>
+          <LocateFixed size={19} />
+          {ui.useLocation}
+        </button>
+      </div>
+      {search.length > 0 && search.trim().length < 2 && <p>{ui.searchHint}</p>}
+      {debounced.length >= 2 && search && (
+        <div className="search-results">
+          {results.isPending ? (
+            <Busy />
+          ) : results.error ? (
+            <ErrorBox message={results.error.message} retry={() => void results.refetch()} />
+          ) : !results.data?.length ? (
+            <p>{ui.empty}</p>
+          ) : (
+            results.data.map((p) => (
+              <button
+                key={p.state + p.lga}
+                onClick={() => {
+                  void choose(p, p.ready);
+                  setSearch('');
+                  setDebounced('');
+                }}
+              >
+                <span>
+                  {p.lga}, {p.state}
+                </span>
+                <small>{p.ready ? ui.ready : ui.notReady}</small>
+              </button>
+            ))
+          )}
+        </div>
+      )}
+      {locating && <Busy />}
+      {located && (
+        <div className="notice">
+          <h2>
+            {located.lga}, {located.state}
+          </h2>
+          <p>{ui.locationConfirm}</p>
+          <button
+            className="button"
+            onClick={() => {
+              void choose(located, located.ready);
+              setLocated(null);
+            }}
+          >
+            {ui.confirmLocation}
+          </button>
+        </div>
+      )}
+      <div className="location-grid">
+        <div>
+          <label htmlFor="state-filter">{ui.stateSearch}</label>
+          <input
+            id="state-filter"
+            value={stateFilter}
+            onChange={(e) => setStateFilter(e.target.value)}
+            placeholder={ui.searchPlaceholder}
+          />
+          <div className="selection-list" role="group" aria-label={ui.stateSearch}>
+            {states
+              .filter((s) => s.state.toLowerCase().includes(stateFilter.toLowerCase()))
+              .map((s) => (
+                <button
+                  key={s.state}
+                  className={s.state === draft.state ? 'selected' : ''}
+                  aria-pressed={s.state === draft.state}
+                  onClick={() => {
+                    update({ state: s.state, lga: '', use_data_from: null });
+                    setAreaFilter('');
+                  }}
+                >
+                  <span>
+                    {s.state}
+                    <small>
+                      {s.areas_ready}/{s.areas} {ui.serviceCoverage}
+                    </small>
+                  </span>
+                  {s.state === draft.state ? <Check size={19} /> : <ArrowRight size={17} />}
+                </button>
+              ))}
+          </div>
+        </div>
+        {draft.state && (
+          <div>
+            <label htmlFor="area-filter">{areaQuestion ?? ui.areaSearch}</label>
+            <input
+              id="area-filter"
+              value={areaFilter}
+              onChange={(e) => setAreaFilter(e.target.value)}
+              placeholder={ui.searchPlaceholder}
+            />
+            <div className="selection-list" role="group" aria-label={ui.areaSearch}>
+              {list.isPending ? (
+                <Busy />
+              ) : list.error ? (
+                <ErrorBox message={list.error.message} retry={() => void list.refetch()} />
+              ) : (
+                list.data
+                  ?.filter((a) => a.lga.toLowerCase().includes(areaFilter.toLowerCase()))
+                  .map((a) => (
+                    <button
+                      key={a.lga}
+                      className={a.lga === draft.lga ? 'selected' : ''}
+                      aria-pressed={a.lga === draft.lga}
+                      onClick={() => void choose({ state: draft.state, lga: a.lga }, a.ready)}
+                    >
+                      <span>
+                        {a.lga}
+                        <small className={a.ready ? 'available' : ''}>
+                          {a.ready ? ui.ready : ui.notReady}
+                        </small>
+                      </span>
+                      {a.lga === draft.lga ? <Check size={19} /> : <ArrowRight size={17} />}
+                    </button>
+                  ))
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+      {draft.state && (
+        <>
+          <button
+            className="text-button map-toggle"
+            aria-expanded={map}
+            onClick={() => setMap((v) => !v)}
+          >
+            <MapPin size={18} />
+            {ui.map}
+            <ChevronDown size={16} />
+          </button>
+          {map && (
+            <AreaMap
+              client={client}
+              place={draft}
+              from={draft.use_data_from}
+              onSelect={(p, ready) => void choose(p, ready)}
+            />
+          )}
+        </>
+      )}
+    </>
+  );
+}
+export function ProfileCard({ client, draft }: { client: Client; draft: Draft }) {
+  const { data } = useQuery({
+    queryKey: ['profile', client.fixture, draft.state, draft.lga, draft.use_data_from],
+    queryFn: () => client.profile(draft, draft.use_data_from),
+    retry: false,
+    staleTime: Infinity,
+  });
+  if (!data) return null;
+  return (
+    <aside className="profile-card">
+      <Leaf size={22} />
+      <div>
+        <h2>{ui.profile}</h2>
+        {draft.use_data_from && (
+          <p>
+            {ui.dataFrom}: {draft.use_data_from.lga}, {draft.use_data_from.state}
+          </p>
+        )}
+        <Lines values={[...data.land.lines, ...data.rain.lines]} />
+      </div>
+    </aside>
+  );
+}
+export function Seasons({
+  q,
+  draft,
+  update,
+}: {
+  q: Questions;
+  draft: Draft;
+  update: (d: Partial<Draft>) => void;
+}) {
+  const [active, setActive] = useState(0);
+  const slots = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    slots.current
+      ?.querySelector<HTMLElement>('[aria-pressed="true"]')
+      ?.scrollIntoView?.({ block: 'nearest', inline: 'nearest', behavior: 'instant' });
+  }, [active, draft.seasons.length]);
+  const [custom, setCustom] = useState('');
+  const [customOpen, setCustomOpen] = useState(false);
+  const [error, setError] = useState('');
+  const current = draft.seasons[active] ?? null;
+  const setCurrent = (value: string[] | null) =>
+    update({ seasons: draft.seasons.map((s, i) => (i === active ? value : s)) });
+  const atLimit = (current?.length ?? 0) >= q.limits.crops_per_season;
+  return (
+    <>
+      <fieldset className="season-count">
+        <legend>{ui.seasonCount}</legend>
+        {Array.from({ length: q.limits.seasons }, (_, i) => i + 1).map((n) => (
+          <button
+            type="button"
+            key={n}
+            aria-pressed={draft.seasons.length === n}
+            className={draft.seasons.length === n ? 'selected' : ''}
+            onClick={() => {
+              update({ seasons: Array.from({ length: n }, (_, i) => draft.seasons[i] ?? null) });
+              setActive((i) => Math.min(i, n - 1));
+            }}
+          >
+            {n}
+          </button>
+        ))}
+      </fieldset>
+      <div className="season-slots" ref={slots}>
+        {draft.seasons
+          .map((crops, i) => ({ crops, i }))
+          .reverse()
+          .map(({ crops, i }) => (
+            <button
+              key={i}
+              aria-pressed={i === active}
+              className={i === active ? 'active' : ''}
+              onClick={() => {
+                setActive(i);
+                setCustom('');
+                setError('');
+              }}
+            >
+              <span>{i === 0 ? ui.newest : `${ui.season} ${i + 1}`}</span>
+              <Sprout size={25} />
+              <strong>
+                {crops === null
+                  ? ui.chooseCrops
+                  : crops.length
+                    ? crops.map((c) => q.crops.find((x) => x.id === c)?.label ?? c).join(' + ')
+                    : q.fallow.label}
+              </strong>
+            </button>
+          ))}
+      </div>
+      <p className="muted">{ui.seasonsHelp}</p>
+      <h2 className="season-heading">
+        {q.steps.find((x) => x.field === 'seasons')?.season_texts?.[active]}
+      </h2>
+      <p>{ui.together}</p>
+      <div className="crop-grid">
+        {q.crops.map((c, i) => {
+          const selected = current?.some((x) => sameCrop(x, c.id)) ?? false;
+          return (
+            <button
+              className={`crop-tile ${selected ? 'selected' : ''}`}
+              aria-pressed={selected}
+              key={c.id}
+              disabled={atLimit && !selected}
+              onClick={() => {
+                const next = toggleCrop(current, c.id, q.limits.crops_per_season);
+                setCurrent(next.length ? next : null);
+              }}
+            >
+              <span className="crop-icon">
+                {[<Wheat key="w" />, <Sprout key="s" />, <Leaf key="l" />][i % 3]}
+              </span>
+              <span>{c.label}</span>
+              {selected && <Check size={18} />}
+            </button>
+          );
+        })}
+        <button
+          className={`crop-tile ${current?.length === 0 ? 'selected' : ''}`}
+          aria-pressed={current?.length === 0}
+          onClick={() => setCurrent([])}
+        >
+          <span className="crop-icon fallow">
+            <Sun />
+          </span>
+          <span>{q.fallow.label}</span>
+        </button>
+        <button
+          className="crop-tile"
+          aria-expanded={customOpen}
+          onClick={() => setCustomOpen((v) => !v)}
+          disabled={atLimit}
+        >
+          <Plus size={24} />
+          <span>{q.other.label}</span>
+        </button>
+      </div>
+      {atLimit && <p role="status">{ui.cropLimit}</p>}
+      {current
+        ?.filter((c) => !q.crops.some((x) => sameCrop(x.id, c)))
+        .map((c) => (
+          <span className="custom-chip" key={c}>
+            {c}
+            <button
+              aria-label={`${ui.remove} ${c}`}
+              onClick={() => {
+                const next = current.filter((x) => x !== c);
+                setCurrent(next.length ? next : null);
+              }}
+            >
+              <X size={16} />
+            </button>
+          </span>
+        ))}
+      {customOpen && (
+        <form
+          className="custom-crop"
+          onSubmit={(e) => {
+            e.preventDefault();
+            const value = custom.trim();
+            const known = q.crops.find((c) => sameCrop(c.label, value) || sameCrop(c.id, value));
+            if (
+              !value ||
+              value.length > 40 ||
+              current?.some((x) => sameCrop(x, known?.id ?? value))
+            ) {
+              setError(ui.customError);
+              return;
+            }
+            if (atLimit) return;
+            setCurrent([...(current ?? []), known?.id ?? value]);
+            setCustom('');
+            setCustomOpen(false);
+            setError('');
+          }}
+        >
+          <label htmlFor="custom-crop">{q.other.text}</label>
+          <div className="input-row">
+            <input
+              id="custom-crop"
+              maxLength={40}
+              value={custom}
+              onChange={(e) => setCustom(e.target.value)}
+              aria-invalid={!!error}
+              aria-describedby={error ? 'crop-error' : undefined}
+            />
+            <button className="button secondary" type="submit">
+              {ui.addCrop}
+            </button>
+          </div>
+          {error && (
+            <p id="crop-error" role="alert">
+              {error}
+            </p>
+          )}
+        </form>
+      )}
+    </>
+  );
+}
+export function Review({
+  draft,
+  q,
+  change,
+}: {
+  draft: Draft;
+  q: Questions;
+  change: (n: number, index?: number) => void;
+}) {
+  const label = (field: string, v: unknown) =>
+    q.steps.find((s) => s.field === field)?.options?.find((o) => o.value === v)?.label;
+  return (
+    <div className="review">
+      <ReviewRow title={ui.selectedArea} change={() => change(0)}>
+        <p>
+          {draft.lga}, {draft.state}
+        </p>
+        {draft.use_data_from && (
+          <p className="notice">
+            {ui.dataFrom}: {draft.use_data_from.lga}, {draft.use_data_from.state}
+          </p>
+        )}
+      </ReviewRow>
+      <ReviewRow title={ui.history} change={() => change(1)}>
+        {draft.seasons.map((c, i) => (
+          <p key={i}>
+            {i === 0 ? ui.newest : `${ui.season} ${i + 1}`}:{' '}
+            {c === null
+              ? ui.validation
+              : c.length
+                ? c.map((x) => q.crops.find((c) => c.id === x)?.label ?? x).join(' + ')
+                : q.fallow.label}
+          </p>
+        ))}
+      </ReviewRow>
+      <ReviewRow title={ui.priorities} change={() => change(2)}>
+        <ol>
+          {draft.priorities.map((k) => (
+            <li key={k}>
+              {
+                q.steps.find((s) => s.field === 'priorities')?.options?.find((o) => o.key === k)
+                  ?.label
+              }
+            </li>
+          ))}
+        </ol>
+      </ReviewRow>
+      {fieldKeys.map((field, i) => (
+        <ReviewRow
+          key={field}
+          title={q.steps.find((s) => s.field === field)!.text}
+          change={() => change(3, i)}
+        >
+          <p>{field in draft.answers ? label(field, draft.answers[field]) : ui.validation}</p>
+        </ReviewRow>
+      ))}
+    </div>
+  );
+}
+function ReviewRow({
+  title,
+  change,
+  children,
+}: {
+  title: string;
+  change: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="review-row">
+      <div>
+        <h2>{title}</h2>
+        {children}
+      </div>
+      <button className="text-button" onClick={change}>
+        {ui.change}
+        <ArrowRight size={16} />
+      </button>
+    </section>
+  );
+}
