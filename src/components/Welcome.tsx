@@ -6,6 +6,7 @@ import { ui } from '@/lib/copy';
 import { BrandMark, Lines } from './shared';
 import FarmLocationSummary from './FarmLocationSummary';
 import ServiceStatus from './ServiceStatus';
+import HeroSlideshow from './HeroSlideshow';
 export default function Welcome({
   ready,
   questions,
@@ -75,18 +76,7 @@ export default function Welcome({
   return (
     <main ref={home} id="main" className="editorial-home landing-v2">
       <section className="cinema-hero" aria-labelledby="hero-heading">
-        <picture className="hero-photograph">
-          <source media="(max-width:600px)" srcSet="/images/farmer-mobile.webp" />
-          <img
-            src="/images/farmer-1680.webp"
-            srcSet="/images/farmer-960.webp 960w, /images/farmer-1680.webp 1680w"
-            sizes="100vw"
-            width="1672"
-            height="941"
-            alt={ui.photoAlt}
-            fetchPriority="high"
-          />
-        </picture>
+        <HeroSlideshow />
         <div className="hero-shade" />
         <div className="cinema-content">
           <p className="eyebrow">Crop rotation, with perspective.</p>

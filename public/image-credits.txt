@@ -14,3 +14,5 @@ DM Sans and DM Serif Display are self-hosted through Fontsource packages under t
 Botanical silhouettes are original interface vectors for orientation, not scientific identification. Lucide icons use the existing project's ISC-licensed icon package.
 
 No NASA endorsement is implied.
+
+Four-scene hero: original fictional AI-generated photographic illustrations created for IHAYO on 14 November 2026. Not actual participants, research or satellite observations. Prompts and native dimensions: /images/hero/PROVENANCE.md.

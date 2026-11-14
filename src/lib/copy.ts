@@ -48,7 +48,7 @@ export const ui = {
   closingKicker: 'FOR EVERY FARMER. FOR WHAT COMES NEXT.',
   closingHeading: 'One land. Many stories.',
   imageCredits:
-    'Visual storytelling: fictional agricultural scenes created with AI for the IHAYO pitch deck. They are illustrations, not photographs of participants or field research.',
+    'Visual storytelling: fictional agricultural scenes created with AI for IHAYO. They are illustrations, not photographs of participants or field research.',
   fieldPortrait: 'Your field, in focus.',
   resultKicker: 'YOUR FARM / THE EVIDENCE / YOUR CHOICES',
   chartLabels: {
