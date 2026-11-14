@@ -125,3 +125,16 @@ describe('typed API and recovery', () => {
     expect(result.blob.size).toBeGreaterThan(0);
   });
 });
+
+it('calls the default browser fetch without binding it to the client', async () => {
+  const original = globalThis.fetch;
+  globalThis.fetch = function (this: unknown) {
+    expect(this).not.toBeInstanceOf(Client);
+    return Promise.resolve(json({ status: 'ok' }));
+  } as typeof fetch;
+  try {
+    await new Client().health();
+  } finally {
+    globalThis.fetch = original;
+  }
+});

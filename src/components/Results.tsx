@@ -17,72 +17,78 @@ function ChoiceCard({ choice: c, onEvidence }: { choice: Choice; onEvidence: () 
       </div>
       <h3>{c.name}</h3>
       {c.what && <p>{c.what}</p>}
-      <h4>{ui.plan}</h4>
-      <ol className="rotation-plan">
-        {c.steps.map((s, i) => (
-          <li key={i}>
-            <span className="year-dot">{s.year}</span>
-            <div>
-              <span className="overline">
-                {ui.year} {s.year} · {s.season}
+      <div className="choice-layout">
+        <div className="choice-plan">
+          <h4>{ui.plan}</h4>
+          <ol className="rotation-plan">
+            {c.steps.map((s, i) => (
+              <li key={i}>
+                <span className="year-dot">{s.year}</span>
+                <div>
+                  <span className="overline">
+                    {ui.year} {s.year} · {s.season}
+                  </span>
+                  <strong>
+                    {s.fallow ? ui.fallowShort : [s.crop, ...s.also].filter(Boolean).join(' + ')}
+                  </strong>
+                  {s.months && <span className="muted">{s.months}</span>}
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          {c.two_seasons_note && <p>{c.two_seasons_note}</p>}
+          <div className="fit-chips">
+            {c.fit.map((f, i) => (
+              <span key={i}>
+                {f.crop} <strong>{display(f.score)}/100</strong>
+                <small>{ui.fit}</small>
               </span>
-              <strong>
-                {s.fallow ? ui.fallowShort : [s.crop, ...s.also].filter(Boolean).join(' + ')}
-              </strong>
-              {s.months && <span className="muted">{s.months}</span>}
-              <p>{s.text}</p>
+            ))}
+          </div>
+        </div>
+        <div className="choice-evaluation">
+          <h4>{ui.mayHelp}</h4>
+          <Sentences values={c.help} />
+          <h4>{ui.watch}</h4>
+          <Sentences values={c.watch} />
+          {!!c.notices.length && (
+            <div className="notice">
+              <Lines values={c.notices} />
             </div>
-          </li>
-        ))}
-      </ol>
-      {c.two_seasons_note && <p>{c.two_seasons_note}</p>}
-      <div className="fit-chips">
-        {c.fit.map((f, i) => (
-          <span key={i}>
-            {f.crop} <strong>{display(f.score)}/100</strong>
-            <small>{ui.fit}</small>
-          </span>
-        ))}
-      </div>
-      <h4>{ui.mayHelp}</h4>
-      <Sentences values={c.help} />
-      <h4>{ui.watch}</h4>
-      <Sentences values={c.watch} />
-      {!!c.notices.length && (
-        <div className="notice">
-          <Lines values={c.notices} />
-        </div>
-      )}
-      {!!c.issues.length && (
-        <>
-          <h4>{ui.issues}</h4>
-          <Sentences values={c.issues} />
-        </>
-      )}
-      {c.priorities.map((p) => (
-        <div key={p.key} className="choice-priority">
-          <h4>{p.label}</h4>
-          <p>{p.text}</p>
-        </div>
-      ))}
-      {!!c.conditions.length && (
-        <>
-          <h4>{ui.conditions}</h4>
-          <Sentences values={c.conditions} />
-        </>
-      )}
-      <div className="confidence">
-        <BookOpen size={20} />
-        <div>
-          <h4>{ui.confidenceLabel}</h4>
-          <Lines values={[c.confidence.text, c.confidence.where]} />
+          )}
+          {!!c.issues.length && (
+            <>
+              <h4>{ui.issues}</h4>
+              <Sentences values={c.issues} />
+            </>
+          )}
+          {c.priorities.map((p) => (
+            <div key={p.key} className="choice-priority">
+              <h4>{p.label}</h4>
+              <p>{p.text}</p>
+            </div>
+          ))}
+          {!!c.conditions.length && (
+            <>
+              <h4>{ui.conditions}</h4>
+              <Sentences values={c.conditions} />
+            </>
+          )}
+          <div className="confidence">
+            <BookOpen size={20} />
+            <div>
+              <h4>{ui.confidenceLabel}</h4>
+              <Lines values={[c.confidence.text, c.confidence.where]} />
+            </div>
+          </div>
+          <p className="ask">{c.ask}</p>
+          <button className="button secondary no-print" onClick={onEvidence}>
+            {ui.evidence}
+            <ArrowRight size={18} />
+          </button>
         </div>
       </div>
-      <p className="ask">{c.ask}</p>
-      <button className="button secondary no-print" onClick={onEvidence}>
-        {ui.evidence}
-        <ArrowRight size={18} />
-      </button>
     </article>
   );
 }

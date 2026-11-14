@@ -1,6 +1,14 @@
+> Historical design-stage report. The current live integration and release status supersede pending-backend or no-push statements below; see API_INTEGRATION_REPORT.md and DEPLOYMENT_READINESS.md.
+
 # IHAYO frontend implementation report
 
 Built 14 November 2026. Backend status: under development by the user's teammate; no base URL is available yet. The frontend integrates the supplied API contract, but **live API and CORS integration are not yet verified**. The private preview allows explicit, persistently labelled development fixtures. It does not imply real agricultural analysis.
+
+## Current visual build
+
+The complete interface uses the cinematic IHAYO identity with the final custom contour/seed logo and refined navigation: responsive sunrise farmer photography, deep navy, warm ivory and gold, self-hosted DM Sans/DM Serif Display, a photographic season timeline, refined selection controls, a farm review, an evidence journal and accessible source sheets. All API transport, request validation, response contracts and development advice fixtures remain unchanged. Agricultural images are generated fictional illustrations, visibly credited; no documentary or trial claim is made.
+
+The redesigned build is available locally at http://127.0.0.1:3001/. The hosted preview was not republished because the current request is for local hosting. See REDESIGN_REPORT.md for visual audit details, screenshot filenames and the pitch-to-interface mapping.
 
 ## Implemented
 
@@ -25,9 +33,9 @@ Built 14 November 2026. Backend status: under development by the user's teammate
 
 ## Verification completed
 
-- `npm test`: **32 passing tests in five files**. Model, transport, full farmer journey, season edge cases and structural accessibility.
+- `npm test`: **37 passing tests in six files**. Model, transport, full farmer journey, season edge cases and structural accessibility.
 - `npm run typecheck`: passed.
-- `npm run build:demo`: passed; Next.js 16.4.6 static export. The complete `out/` directory is about 0.8 MB uncompressed, including HTML and framework assets. This is disk size, not a measured network-transfer performance claim.
+- `npm run build:demo`: passed; Next.js 16.4.6 static export. The complete `out/` directory is about 1.54 MB uncompressed, including HTML and framework assets. This is disk size, not a measured network-transfer performance claim.
 - API tests preserve all documented server error messages, test network failure, allow a simulated 65-second advice response, retry an expired operation once, preserve filename/blob downloads, and ensure profile query parameters never include farm answers.
 - Full interaction test covers unavailable service, explicit fixture opt-in, rejected and accepted fallback, mixed crops, priority order, no default “Not sure”, Striga/waterlogging/labour notices, fewer than three choices, evidence Escape handling and focus return.
 - Season tests cover explicit fallow, removing the final crop, duplicate custom names, custom crops, one/four seasons and crop limits.
@@ -59,3 +67,7 @@ Built 14 November 2026. Backend status: under development by the user's teammate
 9. Run on a physical low-end Android phone, with a slow/mobile network and a screen reader. Emulated viewport and jsdom checks do not establish those hardware outcomes.
 
 These checks require the live backend. They have not been silently replaced with fixture results.
+
+## Final brand refinement
+
+The current review build includes the custom identity, mobile menu, compact service-status component, browser/app icon suite and clearer frontend-owned labels. Lint and TypeScript pass, all 37 tests pass, and both production and demonstration builds succeed. The production build was browser-checked with fixtures disabled before the local demo build was restored. No GitHub push or deployment was performed. See FINAL_POLISH_REPORT.md and DEPLOYMENT_READINESS.md for the current review scope.

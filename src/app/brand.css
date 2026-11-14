@@ -1,0 +1,521 @@
+/* Final brand refinement: exact vector geometry, calm navigation, compact status. */
+.brand {
+  gap: 14px;
+  letter-spacing: 0;
+  line-height: 1;
+  color: var(--green);
+  align-items: center;
+}
+.brand .ihayo-mark {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  display: block;
+}
+.brand-seed {
+  fill: #a87728;
+}
+.brand-type {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: flex-start;
+}
+.ihayo-wordmark {
+  display: block;
+  width: 132px;
+  height: auto;
+  overflow: visible;
+}
+.brand small {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 400;
+  color: var(--muted);
+}
+.is-welcome .brand {
+  color: #f7f4ec;
+}
+.is-welcome .brand-seed {
+  fill: #d5a34d;
+}
+.is-welcome .brand small {
+  color: #d7dfdf;
+}
+.site-header {
+  height: 96px;
+  gap: 32px;
+}
+.site-navigation {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+}
+.desktop-navigation {
+  gap: 32px;
+  margin: 0;
+}
+.desktop-navigation a {
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  border: 0;
+  transition: color 0.18s;
+}
+.desktop-navigation a:hover {
+  color: #edcc92;
+  border: 0;
+}
+.desktop-navigation a:focus-visible,
+.is-welcome .brand-button:focus-visible,
+.menu-toggle:focus-visible {
+  outline: 2px solid #edcc92;
+  outline-offset: 6px;
+  border-radius: 3px;
+}
+.site-header .header-right {
+  gap: 0;
+}
+.hero-baseline {
+  border: 0;
+}
+.hero-secondary {
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 7px;
+  text-decoration-color: #d6e0dc70;
+  transition: color 0.18s;
+}
+.hero-secondary:hover {
+  color: #edcc92;
+}
+.cinema-content > .eyebrow {
+  gap: 0;
+}
+.fixture-banner {
+  background: #102b3a;
+  color: #f0d6a5;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
+  padding: 8px 20px;
+  border: 0;
+}
+.menu-toggle {
+  display: none;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  background: none;
+  border: 0;
+  color: #f7f4ec;
+  border-radius: 3px;
+  align-items: center;
+  justify-content: center;
+}
+.menu-toggle:hover {
+  background: #ffffff0d;
+}
+.navigation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 65;
+  background: #04151ebd;
+  backdrop-filter: blur(4px);
+}
+.mobile-nav-panel {
+  position: fixed;
+  inset: 18px 18px auto;
+  max-width: 480px;
+  margin-left: auto;
+  padding: 24px;
+  background: var(--ivory);
+  z-index: 70;
+  box-shadow: 0 20px 70px #071d2d35;
+  border-radius: 5px;
+  color: var(--deep);
+}
+.mobile-nav-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.mobile-nav-top h2 {
+  font-size: 25px;
+  letter-spacing: -0.035em;
+  margin: 0;
+  font-weight: 500;
+}
+.mobile-nav-top .icon-button {
+  border: 0;
+  background: #071d2d06;
+  border-radius: 3px;
+}
+.mobile-nav-panel nav {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.mobile-nav-panel nav a {
+  min-height: 64px;
+  padding: 14px 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: var(--deep);
+  font-size: 23px;
+  text-decoration: none;
+  letter-spacing: -0.025em;
+  border-radius: 3px;
+}
+.mobile-nav-panel nav a:hover {
+  background: #e6ebdf;
+}
+.mobile-nav-panel > p {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 24px 0 0;
+}
+.mobile-nav-panel a:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}
+.service-status-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px max(40px, calc((100vw - 1320px) / 2));
+  background: #e9ecdf;
+  scroll-margin-top: 20px;
+}
+.service-status-message {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  line-height: 1.55;
+  color: #2a4736;
+  font-size: 16px;
+}
+.service-status-message .service-dot {
+  margin: 0;
+  box-shadow: none;
+  width: 6px;
+  height: 6px;
+}
+.service-status-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 25px;
+  flex-shrink: 0;
+}
+.service-status-actions .text-button {
+  min-height: 44px;
+  padding: 6px 0;
+  font-weight: 500;
+  gap: 9px;
+}
+.service-coverage {
+  color: #54614f;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.service-status-strip.is-unavailable {
+  background: #eeebdf;
+}
+.service-status-strip.is-unavailable .service-status-message {
+  color: #66512a;
+}
+.server-introduction {
+  max-width: 1320px;
+  margin: 24px auto 0;
+  color: #52604f;
+  font-size: 16px;
+  line-height: 1.7;
+}
+.server-introduction .lines {
+  max-width: 880px;
+}
+.server-introduction p {
+  margin-bottom: 7px;
+}
+.server-introduction p:first-child {
+  color: #274a36;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+.server-introduction + .how-section {
+  padding-top: 65px;
+}
+.button {
+  border-radius: 4px;
+  box-shadow: none;
+}
+.button:hover:not(:disabled) {
+  transform: none;
+}
+.button:hover:not(:disabled) svg {
+  transform: translateX(2px);
+}
+.crop-tile:hover .crop-portrait img {
+  transform: scale(1.025);
+}
+.choice-card {
+  border-top-width: 1px;
+  border-radius: 4px;
+}
+.icon-button {
+  border-radius: 4px;
+  box-shadow: none;
+}
+.growing-mark {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  color: #f7f4ec;
+  gap: 0;
+}
+.growing-mark > .ihayo-mark {
+  width: 64px;
+  height: 64px;
+}
+.growing-mark .brand-seed {
+  fill: #d5a34d;
+}
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--green);
+}
+.footer-brand > .ihayo-mark {
+  width: 30px;
+  height: 30px;
+}
+.footer-brand > span {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-tagline {
+  font-size: 16px;
+  letter-spacing: 0;
+  color: var(--muted);
+  font-weight: 400;
+}
+@media (max-width: 1430px) {
+  .server-introduction {
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+  .service-status-strip {
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+}
+@media (max-width: 1100px) {
+  .server-introduction {
+    margin-left: 35px;
+    margin-right: 35px;
+  }
+  .service-status-strip {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+  .site-header {
+    padding-left: 35px;
+    padding-right: 35px;
+  }
+  .desktop-navigation {
+    gap: 26px;
+  }
+}
+@media (min-width: 641px) {
+  .desktop-navigation a:last-child {
+    display: flex;
+  }
+}
+@media (max-width: 800px) {
+  .site-header {
+    padding: 0 26px;
+    height: 92px;
+    gap: 22px;
+  }
+  .brand {
+    gap: 12px;
+  }
+  .brand .ihayo-mark {
+    width: 46px;
+    height: 46px;
+  }
+  .ihayo-wordmark {
+    width: 124px;
+  }
+  .desktop-navigation a {
+    max-width: none;
+    white-space: nowrap;
+  }
+  .desktop-navigation {
+    gap: 20px;
+  }
+  .service-status-strip {
+    padding: 16px 30px;
+  }
+  .server-introduction {
+    margin: 22px 30px 0;
+  }
+  .service-status-actions {
+    gap: 18px;
+  }
+  .server-introduction + .how-section {
+    padding-top: 50px;
+  }
+}
+@media (max-width: 640px) {
+  .desktop-navigation {
+    display: none;
+  }
+  .menu-toggle {
+    display: inline-flex;
+  }
+  .site-header {
+    padding: 0 22px;
+    height: 88px;
+    gap: 12px;
+  }
+  .brand {
+    gap: 12px;
+  }
+  .brand .ihayo-mark {
+    width: 46px;
+    height: 46px;
+  }
+  .ihayo-wordmark {
+    width: 124px;
+  }
+  .brand-type {
+    gap: 5px;
+  }
+  .brand small {
+    font-size: 16px;
+  }
+  .service-status-strip {
+    padding: 13px 24px;
+    gap: 8px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .service-status-message {
+    flex: 1;
+    min-width: 190px;
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+  .service-status-message .service-dot {
+    margin-top: 10px;
+    flex-shrink: 0;
+  }
+  .service-status-actions {
+    gap: 16px;
+    justify-content: flex-start;
+    margin-left: 17px;
+  }
+  .service-status-strip.is-unavailable .service-status-message {
+    min-width: 195px;
+  }
+  .service-status-strip.is-unavailable .service-status-actions {
+    margin: 0;
+  }
+  .service-status-actions .text-button {
+    margin-top: -6px;
+    margin-bottom: -6px;
+  }
+  .server-introduction {
+    margin: 20px 24px 0;
+  }
+  .server-introduction + .how-section {
+    padding-top: 45px;
+  }
+  .fixture-banner {
+    padding: 7px 20px;
+    line-height: 1.45;
+  }
+  .hero-baseline {
+    padding-top: 18px;
+  }
+  .footer-brand > span {
+    display: block;
+    line-height: 1.45;
+  }
+  .footer-tagline {
+    display: block;
+  }
+  .footer-brand {
+    gap: 11px;
+  }
+  .mobile-nav-panel {
+    padding: 22px;
+    inset: 16px 16px auto;
+  }
+}
+@media (max-width: 380px) {
+  .site-header {
+    padding: 0 20px;
+  }
+  .brand {
+    gap: 11px;
+  }
+  .brand .ihayo-mark {
+    width: 44px;
+    height: 44px;
+  }
+  .ihayo-wordmark {
+    width: 120px;
+  }
+  .service-status-strip {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+  .server-introduction {
+    margin-left: 22px;
+    margin-right: 22px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .mobile-nav-panel {
+    animation: navigation-appear 0.18s ease-out both;
+  }
+  .navigation-overlay {
+    animation: fadein 0.15s ease-out both;
+  }
+  @keyframes navigation-appear {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+@media print {
+  .service-status-strip,
+  .server-introduction,
+  .mobile-nav-panel,
+  .navigation-overlay {
+    display: none;
+  }
+  .fixture-banner {
+    color: black;
+    background: white;
+    border: 2px solid black;
+  }
+}

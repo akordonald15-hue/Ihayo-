@@ -10,18 +10,17 @@ import {
   MapPin,
   Plus,
   Search,
-  Sprout,
   Sun,
-  Wheat,
   X,
 } from 'lucide-react';
 import { Client } from '@/lib/api';
 import { sameCrop, toggleCrop } from '@/lib/model';
-import type { Draft, Nearest, Place, Questions, SearchPlace, State } from '@/lib/types';
+import type { Draft, Place, Questions, SearchPlace, State } from '@/lib/types';
 import { fieldKeys } from '@/lib/types';
 import { ui } from '@/lib/copy';
 import { Busy, ErrorBox, Lines } from './shared';
 import AreaMap from './AreaMap';
+import CropBotanical from './CropBotanical';
 export function PlaceForm({
   client,
   draft,
@@ -326,7 +325,17 @@ export function Seasons({
               }}
             >
               <span>{i === 0 ? ui.newest : `${ui.season} ${i + 1}`}</span>
-              <Sprout size={25} />
+              <span className="season-mini" aria-hidden="true">
+                {crops?.[0] === 'maize' || crops?.[0] === 'cowpea' ? (
+                  <img src={`/images/${crops[0]}-crop.webp`} width="240" height="80" alt="" />
+                ) : crops === null ? (
+                  <Plus size={22} strokeWidth={1.2} />
+                ) : crops.length === 0 ? (
+                  <Sun size={22} strokeWidth={1.2} />
+                ) : (
+                  <CropBotanical crop={crops[0]} />
+                )}
+              </span>
               <strong>
                 {crops === null
                   ? ui.chooseCrops
@@ -343,7 +352,7 @@ export function Seasons({
       </h2>
       <p>{ui.together}</p>
       <div className="crop-grid">
-        {q.crops.map((c, i) => {
+        {q.crops.map((c) => {
           const selected = current?.some((x) => sameCrop(x, c.id)) ?? false;
           return (
             <button
@@ -356,8 +365,18 @@ export function Seasons({
                 setCurrent(next.length ? next : null);
               }}
             >
-              <span className="crop-icon">
-                {[<Wheat key="w" />, <Sprout key="s" />, <Leaf key="l" />][i % 3]}
+              <span className={`crop-portrait crop-${c.id}`}>
+                {c.id === 'maize' || c.id === 'cowpea' ? (
+                  <img
+                    src={`/images/${c.id}-crop.webp`}
+                    width="280"
+                    height="220"
+                    alt=""
+                    loading="lazy"
+                  />
+                ) : (
+                  <CropBotanical crop={c.id} />
+                )}
               </span>
               <span>{c.label}</span>
               {selected && <Check size={18} />}

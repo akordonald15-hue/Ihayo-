@@ -45,7 +45,7 @@ describe('complete farmer flow', () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('backend pending'));
     render(<Ihayo />);
     await user.click(await screen.findByRole('button', { name: 'Explore demonstration' }));
-    await user.click(await screen.findByRole('button', { name: 'Start' }));
+    await screen.findByRole('heading', { name: 'In which state is your farm?' });
     expect(screen.getByRole('button', { name: 'Next' })).toBeDisabled();
     await user.click(screen.getByRole('button', { name: /Kaduna 2\/3/ }));
     await user.click(await screen.findByRole('button', { name: 'Birnin Gwari No data yet' }));

@@ -8,7 +8,6 @@ import {
   CloudRain,
   Leaf,
   Plus,
-  ShieldCheck,
   Sprout,
   Sun,
   Wheat,
@@ -25,9 +24,10 @@ import {
 import type { Advice, AdviceRequest, Draft, Nearest, Place } from '@/lib/types';
 import { fieldKeys } from '@/lib/types';
 import { ui } from '@/lib/copy';
-import { Brand, Busy, ErrorBox, Lines } from './shared';
+import { Brand, BrandMark, Busy, ErrorBox } from './shared';
+import SiteNavigation from './SiteNavigation';
 import { PlaceForm, ProfileCard, Review, Seasons } from './FarmForm';
-import FieldIllustration from './FieldIllustration';
+import Welcome from './Welcome';
 import Results from './Results';
 export default function Ihayo() {
   const [queryClient] = useState(
@@ -226,7 +226,7 @@ function Experience() {
           {ui.fixture}
         </div>
       )}
-      <header className="site-header">
+      <header className={`site-header ${screen === 'welcome' ? 'is-welcome' : 'is-product'}`}>
         <button
           className="brand-button"
           onClick={() => {
@@ -236,6 +236,7 @@ function Experience() {
         >
           <Brand />
         </button>
+        {screen === 'welcome' && <SiteNavigation />}
         <div className="header-right">
           <span className="country">
             <span className="nigeria-flag" />
@@ -246,113 +247,32 @@ function Experience() {
               {ui.restart}
             </button>
           )}
-          <span className="header-leaf">
-            <Sprout size={22} />
-          </span>
         </div>
       </header>
       <div ref={heading}>
         {screen === 'welcome' ? (
-          <main id="main">
-            <section className="welcome">
-              <div className="hero-copy">
-                <p className="eyebrow">
-                  <span className="small-line" />
-                  {ui.eyebrow}
-                </p>
-                <h1 tabIndex={-1}>
-                  {ui.hero.split('\n')[0]}
-                  <em>{ui.hero.split('\n')[1]}</em>
-                </h1>
-                <p className="hero-body">{ui.heroBody}</p>
-                {ready ? (
-                  <>
-                    <div className="server-welcome">
-                      <Lines values={q.welcome.split('\n').filter(Boolean)} />
-                    </div>
-                    <button
-                      className="button primary hero-start"
-                      onClick={() => {
-                        setScreen('form');
-                        setStep(0);
-                      }}
-                    >
-                      {ui.start}
-                      <ArrowRight size={21} />
-                    </button>
-                    <p className="privacy">
-                      <ShieldCheck size={17} />
-                      {ui.privacy}
-                    </p>
-                  </>
-                ) : serviceError ? (
-                  <div className="service-state">
-                    <ErrorBox message={ui.unavailable} retry={retry} />
-                    {fixturesEnabled && (
-                      <>
-                        <p>{ui.fixtureDetail}</p>
-                        <button
-                          className="button secondary"
-                          onClick={() => {
-                            setFixture(true);
-                            reset();
-                          }}
-                        >
-                          {ui.fixtureStart}
-                          <ArrowRight size={18} />
-                        </button>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <Busy />
-                )}
-                <p className="support">{ui.welcomeSupport}</p>
-              </div>
-              <div className="hero-visual">
-                <div className="visual-label">
-                  <span className="status-dot" />
-                  {ui.welcomeKicker}
-                </div>
-                <FieldIllustration />
-                <div className="visual-card">
-                  <span className="visual-icon">
-                    <Leaf size={25} />
-                  </span>
-                  <div>
-                    <strong>{ui.footer}</strong>
-                    <span>{ui.visualCaption}</span>
-                  </div>
-                  <span className="card-spark">✳</span>
-                </div>
-              </div>
-            </section>
-            <section className="welcome-bottom">
-              <p className="eyebrow">{ui.welcomeProcess}</p>
-              <div className="feature-grid">
-                {ui.welcomeFeatures.map(([n, title, body]) => (
-                  <article key={n}>
-                    <span className="feature-number">{n}</span>
-                    <div>
-                      <h2>{title}</h2>
-                      <p>{body}</p>
-                    </div>
-                  </article>
-                ))}
-              </div>
-              {health.data && (
-                <p className="coverage">
-                  <span className="status-dot" />
-                  {health.data.areas_ready} / {health.data.areas} {ui.serviceCoverage}
-                  {fixture && ` · ${ui.fixture}`}
-                </p>
-              )}
-            </section>
-          </main>
+          <Welcome
+            ready={!!ready}
+            questions={q}
+            health={health.data}
+            error={serviceError}
+            fixture={fixture}
+            allowDemo={fixturesEnabled}
+            onStart={() => {
+              setScreen('form');
+              setStep(0);
+            }}
+            onDemo={() => {
+              setFixture(true);
+              reset();
+              setScreen('form');
+            }}
+            onRetry={retry}
+          />
         ) : screen === 'working' ? (
           <main id="main" className="working">
             <div className="growing-mark">
-              <Sprout size={70} strokeWidth={1} />
+              <BrandMark />
             </div>
             <p className="eyebrow">
               {draft.lga} / {draft.state}
@@ -391,7 +311,7 @@ function Experience() {
                 ))}
               </ol>
               <div className="journey-footer">
-                <Sprout size={28} />
+                <img src="/images/soil-480.webp" width="480" height="380" alt="" loading="lazy" />
                 <p>{ui.footer}</p>
                 <small>{ui.privacy}</small>
               </div>
@@ -567,10 +487,13 @@ function Experience() {
                 </>
               ) : step === 3 ? (
                 <>
-                  <p className="eyebrow">{ui.fieldHelp}</p>
                   <h1 tabIndex={-1}>{question(fieldKeys[fieldIndex])!.text}</h1>
+                  {fieldIndex === 0 && (
+                    <p className="form-description field-intro">{ui.fieldHelp}</p>
+                  )}
                   <div className="field-symbol">
-                    <Sprout size={65} strokeWidth={1} />
+                    <img src="/images/soil-480.webp" width="480" height="380" alt="" />
+                    <span>{ui.fieldPortrait}</span>
                   </div>
                   <div className="field-options">
                     {question(fieldKeys[fieldIndex])!.options!.map((o, i) => (
@@ -641,10 +564,17 @@ function Experience() {
         )}
       </div>
       <footer className="site-footer">
-        <span>
-          IHAYO <span className="footer-dot">·</span> {ui.tagline}
+        <span className="footer-brand">
+          <BrandMark />
+          <span>
+            {ui.brand}
+            <span className="footer-tagline">{ui.tagline}</span>
+          </span>
         </span>
         <span>{ui.footerNote}</span>
+        <a href="/image-credits.txt" target="_blank" rel="noopener noreferrer">
+          {ui.photoCreditShort}
+        </a>
       </footer>
     </>
   );

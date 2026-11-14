@@ -1,14 +1,32 @@
 'use client';
-import { ArrowRight, Leaf, LoaderCircle, TriangleAlert } from 'lucide-react';
+import { ArrowRight, LoaderCircle, TriangleAlert } from 'lucide-react';
 import { ui } from '@/lib/copy';
+import { brandGeometry as geometry } from '@/lib/brand';
+export function BrandMark() {
+  return (
+    <svg viewBox="0 0 64 64" fill="none" aria-hidden="true" className="ihayo-mark">
+      <path d={geometry.fields} fill="currentColor" />
+      <path d={geometry.seed} className="brand-seed" />
+    </svg>
+  );
+}
 export function Brand() {
   return (
     <span className="brand">
-      <span className="brand-symbol">
-        <Leaf size={24} strokeWidth={1.8} />
-      </span>
-      <span>
-        {ui.brand}
+      <BrandMark />
+      <span className="brand-type">
+        <svg
+          className="ihayo-wordmark"
+          viewBox={`0 0 ${geometry.wordBounds[2]} ${geometry.wordBounds[3]}`}
+          fill="currentColor"
+          aria-hidden="true"
+        >
+          <path
+            d={geometry.wordmark}
+            transform={`translate(${-geometry.wordBounds[0]} ${-geometry.wordBounds[1]})`}
+          />
+        </svg>
+        <span className="sr-only">{ui.brand}</span>
         <small>{ui.tagline}</small>
       </span>
     </span>

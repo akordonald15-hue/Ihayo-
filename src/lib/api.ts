@@ -31,7 +31,7 @@ export const fixturesEnabled = process.env.NEXT_PUBLIC_ENABLE_FIXTURES === 'true
 export class Client {
   constructor(
     public fixture = false,
-    private transport: typeof fetch = fetch,
+    private transport: typeof fetch = (input, init) => fetch(input, init),
   ) {}
   async request<T>(path: string, body?: unknown): Promise<T> {
     if (this.fixture) {

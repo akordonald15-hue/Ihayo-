@@ -1,0 +1,16 @@
+IHAYO / Visual storytelling and type credits
+
+The farmer, landscape, hands holding soil, maize, and cowpea scenes were generated with OpenAI Image Generation for the user's IHAYO pitch deck in November 2026. The character and setting are fictional. These illustrations do not depict an actual research participant, measured soil sample, farm visit, or crop trial.
+
+Responsive WebP derivatives are used here with explicit illustrative-image credits. No third-party documentary-photo licence is asserted. The visual assets do not support scientific claims; evidence comes separately from the advice API.
+
+farmer-1680.webp, farmer-960.webp, farmer-mobile.webp: pitch asset musa_open.png.
+farmer-close-1280.webp: pitch asset musa_close.png.
+soil-960.webp, soil-480.webp: pitch asset soil_hands.png.
+maize-crop.webp, cowpea-crop.webp: crops from the pitch asset crop_history.png.
+
+DM Sans and DM Serif Display are self-hosted through Fontsource packages under the SIL Open Font License 1.1. Licence copies are available in /licenses/DM-Sans-OFL.txt and /licenses/DM-Serif-Display-OFL.txt.
+
+Botanical silhouettes are original interface vectors for orientation, not scientific identification. Lucide icons use the existing project's ISC-licensed icon package.
+
+No NASA endorsement is implied.

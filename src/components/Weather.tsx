@@ -155,7 +155,7 @@ export function WeatherScenario({
                       <span>
                         {v.label}{' '}
                         <strong>
-                          {display(v.n)} {ui.days}
+                          {display(v.n, 1)} {ui.days}
                         </strong>
                       </span>
                       <div className={`comparison-track tone-${j}`}>
@@ -169,7 +169,7 @@ export function WeatherScenario({
                 <caption>{ui.fit}</caption>
                 <thead>
                   <tr>
-                    <th scope="col">{ui.customCrop}</th>
+                    <th scope="col">{ui.crop}</th>
                     <th scope="col">{ui.before}</th>
                     <th scope="col">{ui.after}</th>
                   </tr>
