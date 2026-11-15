@@ -4,6 +4,7 @@ import { ArrowRight, BookOpen, Download, Printer, Sprout } from 'lucide-react';
 import type { Advice, AdviceRequest, Choice } from '@/lib/types';
 import { Client } from '@/lib/api';
 import { ui } from '@/lib/copy';
+import RotationExplorer, { RotationTimeline } from './RotationExplorer';
 import { Busy, display, ErrorBox, Lines, Score, Section, Sentences } from './shared';
 import EvidenceSheet from './EvidenceSheet';
 import AreaMap from './AreaMap';
@@ -20,32 +21,24 @@ function ChoiceCard({ choice: c, onEvidence }: { choice: Choice; onEvidence: () 
       <div className="choice-layout">
         <div className="choice-plan">
           <h4>{ui.plan}</h4>
-          <ol className="rotation-plan">
-            {c.steps.map((s, i) => (
-              <li key={i}>
-                <span className="year-dot">{s.year}</span>
-                <div>
-                  <span className="overline">
-                    {ui.year} {s.year} · {s.season}
-                  </span>
-                  <strong>
-                    {s.fallow ? ui.fallowShort : [s.crop, ...s.also].filter(Boolean).join(' + ')}
-                  </strong>
-                  {s.months && <span className="muted">{s.months}</span>}
-                  <p>{s.text}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+          <RotationTimeline choice={c} />
           {c.two_seasons_note && <p>{c.two_seasons_note}</p>}
-          <div className="fit-chips">
-            {c.fit.map((f, i) => (
-              <span key={i}>
-                {f.crop} <strong>{display(f.score)}/100</strong>
-                <small>{ui.fit}</small>
-              </span>
-            ))}
-          </div>
+          <details className="rotation-fit-details">
+            <summary>Land and weather fit</summary>
+            <p>
+              These scores describe environmental suitability, not harvests, income or the certainty
+              of this rotation's evidence.
+            </p>
+            <div className="fit-chips">
+              {c.fit.map((f, i) => (
+                <span key={i}>
+                  {f.crop}{' '}
+                  <strong>{f.score == null ? ui.noNumber : `${display(f.score)}/100`}</strong>
+                  <small>{ui.fit}</small>
+                </span>
+              ))}
+            </div>
+          </details>
         </div>
         <div className="choice-evaluation">
           <h4>{ui.mayHelp}</h4>
@@ -112,6 +105,9 @@ export default function Results({
   const [download, setDownload] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(false);
+  const [weatherOpened, setWeatherOpened] = useState(false);
+  const [chartsOpened, setChartsOpened] = useState(false);
+  const [mapOpened, setMapOpened] = useState(false);
   async function save(kind: 'text' | 'agent-report') {
     setDownload(true);
     setError('');
@@ -160,9 +156,37 @@ export default function Results({
           <ArrowRight size={18} />
         </button>
       </div>
+      <nav className="results-shortcuts no-print" aria-label="Explore your results">
+        <a href="#rotation-choices">Your patterns</a>
+        <a href="#result-checks">Important checks</a>
+        <a href="#weather-lab">Weather what-if</a>
+        <a href="#result-records">Local records</a>
+        <a href="#download-report">Save for my agent</a>
+      </nav>
       <div className="intro-advice">
         <Lines values={p.intro} />
       </div>
+      <Section title={p.choices.heading} id="rotation-choices" className="choices-section">
+        <Lines values={p.choices.notices} className="notice" />
+        <RotationExplorer
+          key={`${request.state}/${request.lga}/${p.choices.items.map((c) => c.option_id).join('/')}`}
+          choices={p.choices.items}
+          renderChoice={(c) => (
+            <ChoiceCard choice={c} onEvidence={() => setEvidence(c.option_id)} />
+          )}
+        />
+      </Section>
+      <div id="result-checks">
+        <Section title={p.unknown.heading} className="uncertainty">
+          <p>{p.unknown.intro}</p>
+          <Sentences values={p.unknown.items} />
+        </Section>
+      </div>
+      <p className="results-next-step">
+        Your next step: discuss the patterns and these checks with your extension agent. Opening a
+        pattern does not mean it has been checked on your farm.
+      </p>
+      <div id="result-records" />
       <div className="land-rain">
         <Section title={p.land.heading}>
           <Lines values={p.land.lines} />
@@ -178,23 +202,6 @@ export default function Results({
       </div>
       <Section title={p.told.heading}>
         <Lines values={p.told.lines} />
-      </Section>
-      <Section title={p.choices.heading} className="choices-section">
-        <Lines values={p.choices.notices} className="notice" />
-        <div
-          className="choice-grid"
-          style={{
-            gridTemplateColumns: `repeat(${Math.max(1, p.choices.items.length)}, minmax(0, 1fr))`,
-          }}
-        >
-          {p.choices.items.map((c, i) => (
-            <ChoiceCard
-              key={`${c.option_id}-${i}`}
-              choice={c}
-              onEvidence={() => setEvidence(c.option_id)}
-            />
-          ))}
-        </div>
       </Section>
       <Section title={p.crops.heading}>
         <p>{p.crops.intro}</p>
@@ -216,10 +223,7 @@ export default function Results({
         <p>{p.measures.intro}</p>
         <Sentences values={p.measures.items} />
       </Section>
-      <Section title={p.unknown.heading} className="uncertainty">
-        <p>{p.unknown.intro}</p>
-        <Sentences values={p.unknown.items} />
-      </Section>
+      <div id="download-report" />
       <Section title={p.print.heading}>
         <Lines values={p.print.lines} />
         <div className="download-actions no-print">
@@ -244,18 +248,53 @@ export default function Results({
         <div role="status">{saved && <p>{ui.saved}</p>}</div>
         {error && <ErrorBox message={error} />}
       </Section>
-      <WeatherScenario
-        key={request.state + request.lga}
-        client={client}
-        advice={a}
-        request={request}
-        onRefresh={onRefresh}
-      />
-      <WeatherCharts client={client} advice={a} request={request} onRefresh={onRefresh} />
-      <section className="result-section no-print">
-        <h2>{ui.map}</h2>
-        <AreaMap client={client} place={p.place} from={request.use_data_from} />
-      </section>
+      <details
+        className="results-disclosure no-print"
+        id="weather-lab"
+        onToggle={(event) => {
+          if (event.currentTarget.open) setWeatherOpened(true);
+        }}
+      >
+        <summary>
+          <span>Try a weather what-if</span>
+          <span>Live exploration of historical weather, not a forecast</span>
+        </summary>
+        {weatherOpened && (
+          <WeatherScenario
+            key={request.state + request.lga}
+            client={client}
+            advice={a}
+            request={request}
+            onRefresh={onRefresh}
+          />
+        )}
+      </details>
+      <details
+        className="results-disclosure no-print"
+        onToggle={(event) => {
+          if (event.currentTarget.open) setChartsOpened(true);
+        }}
+      >
+        <summary>
+          <span>Explore the weather records</span>
+          <span>Charts, numbers and source limitations</span>
+        </summary>
+        {chartsOpened && (
+          <WeatherCharts client={client} advice={a} request={request} onRefresh={onRefresh} />
+        )}
+      </details>
+      <details
+        className="results-disclosure no-print"
+        onToggle={(event) => {
+          if (event.currentTarget.open) setMapOpened(true);
+        }}
+      >
+        <summary>
+          <span>{ui.map}</span>
+          <span>Area coverage, not exact farm boundaries</span>
+        </summary>
+        {mapOpened && <AreaMap client={client} place={p.place} from={request.use_data_from} />}
+      </details>
       <div className="restart no-print">
         <p>{ui.footer}</p>
         <button className="button secondary" onClick={onRestart}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import axe from 'axe-core';
 import Results from '@/components/Results';
@@ -62,6 +62,7 @@ it('has no detectable structural accessibility violations in results', async () 
       />
     </QueryClientProvider>,
   );
+  fireEvent.click(screen.getByText('Try a weather what-if'));
   await screen.findByText(/This is a what-if, not a forecast/);
   const result = await axe.run(container, {
     rules: { 'color-contrast': { enabled: false }, region: { enabled: false } },

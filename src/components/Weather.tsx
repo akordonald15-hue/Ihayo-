@@ -159,7 +159,11 @@ export function WeatherScenario({
                         </strong>
                       </span>
                       <div className={`comparison-track tone-${j}`}>
-                        <i style={{ width: `${((v.n ?? 0) / max) * 100}%` }} />
+                        <i
+                          style={{
+                            transform: `scaleX(${Math.max(0, Math.min(1, (v.n ?? 0) / max))})`,
+                          }}
+                        />
                       </div>
                     </div>
                   ))}

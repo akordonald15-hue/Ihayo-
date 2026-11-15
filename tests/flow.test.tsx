@@ -87,6 +87,7 @@ describe('complete farmer flow', () => {
     expect(screen.getByText(/Sample warning slot: you reported Striga/)).toBeVisible();
     expect(screen.getByText(/Sample warning slot: you reported waterlogging/)).toBeVisible();
     expect(screen.getByText(/Sample warning slot: you reported limited workers/)).toBeVisible();
+    await user.click(screen.getByRole('button', { name: /Explore / }));
     expect(screen.getAllByRole('button', { name: 'See the evidence' })).toHaveLength(1);
     await user.click(screen.getByRole('button', { name: 'See the evidence' }));
     const dialog = await screen.findByRole('dialog');
@@ -111,17 +112,17 @@ describe('complete farmer flow', () => {
     );
     const headings = screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent);
     expect(headings.slice(0, 8)).toEqual([
+      'YOUR CHOICES',
+      'WHAT WE DO NOT KNOW',
       'YOUR LAND',
       'RAIN AND THE GROWING SEASON',
       'WHAT YOU TOLD US',
-      'YOUR CHOICES',
       'CROPS THAT SUIT THE LAND',
       'WHAT CAN HELP YOUR LAND AND WATER',
-      'WHAT WE DO NOT KNOW',
       'SAVE AND PRINT',
     ]);
     expect(screen.getByText(a.page.intro[1])).toBeVisible();
-    expect(screen.getByText(a.page.choices.items[0].confidence.text)).toBeVisible();
+    expect(screen.getByText(`Evidence: ${a.page.choices.items[0].confidence.text}`)).toBeVisible();
   });
   it('keeps null or empty chart data readable', () => {
     wrap(

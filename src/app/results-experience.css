@@ -1,0 +1,438 @@
+/* Results motion is local and finite: no animation runtime, autoplay or layout loops. */
+.results .results-heading h1 {
+  font-size: clamp(30px, 3.4vw, 50px);
+  line-height: 1.12;
+}
+.results-shortcuts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-block: 20px;
+}
+.results-shortcuts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--green);
+  text-underline-offset: 5px;
+}
+.rotation-experience-intro > p:first-child {
+  font-size: clamp(22px, 2vw, 30px);
+  color: var(--deep);
+}
+.exploration-progress {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  color: var(--green);
+  margin: 24px 0 12px;
+  font-size: 15px;
+}
+.exploration-track {
+  width: min(180px, 100%);
+  height: 4px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #dfe4d8;
+}
+.exploration-track > span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left;
+  background: var(--green);
+  transition: transform 220ms ease;
+}
+.exploration-complete {
+  color: var(--green);
+  font-size: 15px;
+}
+.rotation-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+  gap: 24px;
+  margin-block: 28px;
+}
+.rotation-preview {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: #fffdf7;
+}
+.rotation-portrait {
+  height: 180px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: #e8ecdf;
+  color: var(--green);
+  overflow: hidden;
+}
+.rotation-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.rotation-portrait > span {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  font-size: 11px;
+  background: #071d2dc9;
+  color: #fffdf7;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+.rotation-preview-body {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 24px;
+  flex: 1;
+}
+.rotation-role {
+  font-size: 12px;
+  color: var(--green);
+  line-height: 1.6;
+}
+.rotation-preview h3 {
+  font-size: clamp(25px, 2.2vw, 34px);
+  line-height: 1.2;
+  margin-block: 16px 12px;
+}
+.rotation-pattern-name {
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.45;
+  margin: 0 0 20px;
+}
+.rotation-evidence-label {
+  font-size: 15px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+  margin: 0 0 20px;
+}
+.rotation-preview-sequence {
+  color: var(--green);
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 0 18px;
+}
+.rotation-preview .notice {
+  font-size: 15px;
+}
+.rotation-preview .button {
+  width: 100%;
+  margin-top: auto;
+  justify-content: space-between;
+}
+.rotation-compare-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.rotation-compare-toggle > span {
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.rotation-compare-toggle[aria-pressed='true'] {
+  background: #e5eddf;
+  border-color: var(--green);
+}
+.rotation-comparison-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding: 24px;
+  background: #e8ecdf;
+  border-radius: 20px;
+}
+.rotation-comparison-bar p {
+  margin: 6px 0 0;
+  font-size: 15px;
+}
+.rotation-selected-view > .text-button {
+  margin-bottom: 18px;
+}
+.rotation-view-heading {
+  font-size: clamp(26px, 3vw, 40px);
+  line-height: 1.2;
+  scroll-margin-top: 24px;
+  margin-block: 16px;
+}
+.rotation-detail-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 20px;
+}
+.rotation-detail-navigation > span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.rotation-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 28px;
+}
+.rotation-comparison > div {
+  min-width: 0;
+}
+.rotation-comparison .choice-layout {
+  grid-template-columns: 1fr;
+}
+.results .choice-card {
+  min-width: 0;
+}
+.rotation-season-strip {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.rotation-season-strip li {
+  min-width: 0;
+}
+.rotation-season-strip button {
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 18px;
+  background: #f7f4ec;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--deep);
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+.rotation-season-strip button[aria-pressed='true'] {
+  background: #e8efdf;
+  border-color: var(--green);
+}
+.rotation-season-strip button > span:not(.season-number) {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.rotation-season-strip strong {
+  font-size: 18px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.season-number {
+  display: grid;
+  place-items: center;
+  background: var(--green);
+  color: #fffdf7;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 14px;
+}
+.season-inspector {
+  border-left: 3px solid var(--green);
+  padding: 4px 0 4px 18px;
+}
+.season-inspector p {
+  font-size: 15px;
+  line-height: 1.7;
+}
+.season-inspector p strong {
+  display: block;
+}
+.season-navigation {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.season-navigation .text-button {
+  min-height: 44px;
+}
+.rotation-fit-details {
+  margin-top: 24px;
+}
+.rotation-fit-details > summary {
+  min-height: 44px;
+  cursor: pointer;
+  color: var(--green);
+  font-weight: 600;
+}
+.rotation-fit-details p {
+  font-size: 15px;
+}
+.rotation-empty {
+  padding: 28px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+.results-next-step {
+  padding-block: 12px 28px;
+  color: var(--green);
+  max-width: 75ch;
+}
+.results-disclosure {
+  border-top: 1px solid var(--line);
+  padding-block: 20px;
+  margin-block: 12px;
+}
+.results-disclosure > summary {
+  cursor: pointer;
+  min-height: 60px;
+  color: var(--deep);
+}
+.results-disclosure > summary span:first-child {
+  font-size: clamp(22px, 2vw, 30px);
+}
+.results-disclosure > summary span + span {
+  display: block;
+  color: var(--muted);
+  font-size: 15px;
+  padding-top: 8px;
+}
+.rotation-print-report,
+.rotation-print-text {
+  display: none;
+}
+@media (hover: hover) {
+  .rotation-preview {
+    transition:
+      transform 180ms ease,
+      box-shadow 180ms ease;
+  }
+  .rotation-preview:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px #071d2d0d;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rotation-selected-view .choice-top,
+  .rotation-selected-view .choice-card > h3 {
+    animation: rotation-reveal 280ms ease-out both;
+  }
+  @keyframes rotation-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+@media (max-width: 800px) {
+  .rotation-comparison {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .rotation-preview-grid {
+    gap: 20px;
+  }
+  .rotation-portrait {
+    height: 150px;
+  }
+  .rotation-preview-body {
+    padding: 20px;
+  }
+  .rotation-comparison-bar {
+    padding: 20px;
+  }
+  .rotation-comparison-bar .button {
+    width: 100%;
+  }
+  .rotation-detail-navigation {
+    justify-content: center;
+  }
+  .rotation-detail-navigation > span {
+    flex-basis: 100%;
+    text-align: center;
+    order: -1;
+  }
+  .rotation-season-strip button {
+    padding: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rotation-experience *,
+  .interactive-rotation * {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .rotation-preview:hover {
+    transform: none;
+  }
+}
+@media print {
+  .rotation-print-report {
+    display: block !important;
+  }
+  .rotation-print-text {
+    display: block;
+  }
+  .rotation-season-strip button {
+    border: 1px solid #ccc;
+    background: transparent;
+    color: #000;
+  }
+  .rotation-season-strip {
+    break-inside: avoid;
+  }
+  .rotation-fit-details > * {
+    display: block !important;
+  }
+  .rotation-fit-details > summary {
+    display: none !important;
+  }
+}
+
+.results .weather-scenario .comparison-track i {
+  width: 100%;
+  transform-origin: left center;
+  transition: transform 220ms ease-out;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .rotation-experience button:active {
+    transform: scale(0.98);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .results .weather-scenario .comparison-track i {
+    transition: none;
+  }
+}
