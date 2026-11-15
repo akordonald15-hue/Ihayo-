@@ -7,3 +7,5 @@ out/
 *.tsbuildinfo
 coverage/
 .local-server/
+
+.vercel/
