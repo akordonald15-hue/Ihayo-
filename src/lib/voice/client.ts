@@ -93,7 +93,7 @@ export class HttpVoiceClient implements VoiceClient {
   }
   async text(message: string, context: VoiceResponse | null, signal: AbortSignal) {
     if (!message.trim() || message.length > MAX_MESSAGE_LENGTH)
-      throw new VoiceError('invalid_message', 'Please enter a message of up to 8,000 characters.');
+      throw new VoiceError('invalid_message', 'Please enter a message of up to 3,000 characters.');
     validateContext(context);
     return parseVoiceResponse(
       await this.request(

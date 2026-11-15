@@ -1,0 +1,437 @@
+{
+  "state": "Kaduna",
+  "lga": "Kajuru",
+  "seasons": [["sorghum"]],
+  "priorities": ["organic_matter", "inputs"],
+  "irrigated": false,
+  "striga": null,
+  "waterlogged": false,
+  "enough_workers": true,
+  "easy_seed": true,
+  "tenure": "own",
+  "missing": [],
+  "clarifying_question": null,
+  "transcript": "Correction: I grew sorghum last season, not maize. My farm is still in Kajuru, Kaduna. My priorities are soil fertility and lower inputs.",
+  "confidence": "complete",
+  "advice_id": "bafd62596a8b4616",
+  "advice_text": "==============================================================================\nCROP ROTATION ADVICE FOR YOUR FARM\nPlace: Kajuru, Kaduna (North West)\nWeather data: NASA POWER 2001 to 2025. Soil: iSDAsoil.\nMade on: 2026-11-15\n==============================================================================\n\nTHIS IS ADVICE TO TALK ABOUT, NOT AN ORDER.\nPlease show it to your extension agent. They know your field, your market and\nthe local rules. This tool has not seen your field.\nDo not buy or mix fertiliser or chemicals from this page. Ask your extension\nagent for the amount for your own plot.\n\n------------------------------------------------------------------------------\n1. YOUR LAND\n- Soil acidity (pH): about 5.7. The soil map says it is most likely between\n  5.5 and 5.9.\n- The soil is sandy clay loam, both at the top and deeper down.\n- Organic carbon in the top 20 cm: 6.4 g per kg. A soil test would tell you\n  how this compares with good soil.\n- The land slopes about 2 degrees at this spot (flat ground is 0).\n- The soil acidity estimate is in the best range for: Cassava, Cowpea (beans),\n  Groundnut (peanut), Maize, Millet, Rice, Sorghum (guinea corn), Soybean.\n- The soil may be too acid for: Yam.\n\n------------------------------------------------------------------------------\n2. RAIN AND THE GROWING SEASON\n- In a normal year about 1,370 mm of rain falls.\n- The rains usually start around 31 May and the growing season ends around 5\n  Nov, roughly 165 days. This is a computer estimate from weather data.\n- In about 1 year out of 4 the season is only 142 days or shorter.\n- The weather source gave rain totals that look wrong for 2020, 2021, 2022. We\n  left those years out. Please do not trust year-to-year rain details too\n  much.\n- The planting months in section 4 are what farmers in your zone report. They\n  can differ from the computer estimate above. Trust what you and your\n  neighbours know.\n\n------------------------------------------------------------------------------\n3. WHAT YOU TOLD US\n- Last season: Sorghum (guinea corn)\n- You told us about one season, so we cannot see a pattern.\n\n------------------------------------------------------------------------------\n4. YOUR CHOICES\nDo not buy or mix fertiliser or chemicals from this page. Ask your extension\nagent for the amount for your own plot.\n\nCHOICE 1: KEEP WHAT YOU DO NOW\n  CEREAL AFTER CEREAL\n  What it is: You grow cereals such as maize, sorghum, millet or rice one\n  season after another.\n  Year by year:\n    Year 1: Sorghum (guinea corn), usually planted Apr to Jul\n    Year 2: Sorghum (guinea corn), usually planted Apr to Jul\n    Year 3: Sorghum (guinea corn), usually planted Apr to Jul\n    Year 4: Sorghum (guinea corn), usually planted Apr to Jul\n  How the crops fit your land (out of 100): Sorghum (guinea corn) 70.\n  What may help:\n    - You need no new seed or market.\n    - Sorghum and millet cope with less rain than maize.\n  What to watch out for:\n    - Striga, a parasitic weed, attacks maize, sorghum, rice and millet, so\n      changing from one cereal to another is unlikely to reduce it.\n    - Fall armyworm attacks maize, rice and sorghum.\n    - Maize every season uses up soil nitrogen and organic matter. In one\n      Nigerian trial, maize yields fell over the years.\n    - Sorghum smut can stay in the soil for years, so grow sorghum on the same\n      field only once in four years.\n  Problems we found in this plan:\n    - Years 1, 2, 3, 4: head smut lives in the soil for years, so grow sorghum\n      on the same field only once in 4 years\n  How it lines up with what matters to you:\n    - Add organic matter and keep crop residue: this is the comparison point\n    - Keep seed, fertiliser and labour needs low: this is the comparison point\n  How sure we are: some evidence. Tested in: trials at Ibadan and Zaria and\n  reviews across Africa.\n  Ask: your extension agent about checking for Striga and armyworm on your\n  field.\n\nCHOICE 2: ANOTHER WAY TO ROTATE\n  A LEGUME AND A CEREAL IN TURNS\n  What it is: You grow a legume (cowpea, groundnut or soybean) one season and\n  a cereal the next, in turns.\n  Year by year:\n    Year 1: Cowpea (beans), usually planted May to Aug\n    Year 2: Millet, usually planted Apr to Jul\n    Year 3: Cowpea (beans), usually planted May to Aug\n    Year 4: Millet, usually planted Apr to Jul\n  How the crops fit your land (out of 100): Cowpea (beans) 90, Millet 80.\n  The tests above were done with other crops. For Millet the evidence is\n  weaker or missing.\n  What may help:\n    - Across Africa, a cereal grown after a legume gave on average about 41%\n      more grain than a cereal after a cereal, about 0.49 tonnes per hectare\n      (about 200 kg per acre). Maize responded more than sorghum or millet,\n      but that comparison is weak and the gain for sorghum and millet was not\n      certain.\n    - Legumes can put nitrogen into the soil. In the northern savanna soybean\n      left about 56 to 95 kg of nitrogen per hectare (about 23 to 38 kg per\n      acre), but only when its roots are counted and the stalks stay in the\n      field. When the grain is taken away the balance is often negative.\n    - On 12 farmers' fields in Kaduna that had Striga, maize after cowpea gave\n      21% more grain than maize after maize. That trial used Striga-resistant\n      maize and 100 kg of nitrogen per hectare (about 40 kg per acre), and the\n      gain may be smaller where there is no Striga or less fertiliser.\n    - Soybean and groundnut are the most sold of the crops compared (61% and\n      57% of the harvest is sold, against 34% for sorghum and 33% for millet).\n  What to watch out for:\n    - In the drier Sahel zone the gains were smaller and not certain.\n    - The gain gets smaller when you put on more nitrogen fertiliser.\n    - In the South West and South East, trials found mixed gains after cowpea\n      and soybean.\n    - Legumes need good seed, and often phosphorus, drainage and deep enough\n      soil. Check these on your field.\n  How it lines up with what matters to you:\n    - Add organic matter and keep crop residue: no clear benefit found\n    - Keep seed, fertiliser and labour needs low: needs extra seed, inoculant\n      or work\n  How sure we are: some evidence. Tested in: farmers' fields in Kaduna, trials\n  at Zaria and Ibadan, and reviews across Africa.\n  Ask: your extension agent and a seed supplier about phosphorus, drainage and\n  seed.\n\nCHOICE 3: ANOTHER WAY TO ROTATE\n  A LONGER ROTATION OF THREE OR FOUR SEASONS\n  What it is: You follow a cereal with a legume, then a different cereal, then\n  a different legume.\n  Year by year:\n    Year 1: Cowpea (beans), usually planted May to Aug\n    Year 2: Millet, usually planted Apr to Jul\n    Year 3: Soybean, usually planted May to Jul\n    Year 4: Rice, usually planted Apr to Jul\n  How the crops fit your land (out of 100): Cowpea (beans) 90, Millet 80, Rice\n  90, Soybean 100.\n  No test measured this exact pattern.\n  What may help:\n    - Each crop comes back less often, which helps against diseases that stay\n      in the soil (for sorghum, one crop in four years on the same field;\n      groundnut should not be repeated on the same field).\n    - Your income and risk are spread over more crops.\n    - A legume comes in two of every four seasons.\n  What to watch out for:\n    - It will not clear Striga seed, which can stay in the soil for 15 to 20\n      years.\n    - No Nigerian trial compares a long rotation with a short one.\n    - More crops need more labour, seed and markets.\n  How it lines up with what matters to you:\n    - Add organic matter and keep crop residue: we do not know yet\n    - Keep seed, fertiliser and labour needs low: the evidence says: highest\n      complexity\n  How sure we are: little evidence. Tested in: no trial of this exact pattern\n  in Nigeria, only farmers' own reports from Kano and Kaduna.\n  Ask: your extension agent about labour, seed and markets for the extra\n  crops.\n\n------------------------------------------------------------------------------\n5. CROPS THAT FIT YOUR LAND\nThe number is out of 100. A higher number means the crop fits your land and\nclimate better. It does not predict your harvest.\n  Cassava: 100 (all checks fine)\n  Groundnut (peanut): 100 (all checks fine)\n  Soybean: 100 (all checks fine)\n  Cowpea (beans): 90 (temperature a little too low)\n  Maize: 90 (yearly rain a little too high)\n  Rice: 90 (yearly rain a little too low)\n  Millet: 80 (yearly rain a little too high; temperature a little too low)\n  Sorghum (guinea corn): 70 (yearly rain too high for it)\n  Yam: 57 (the soil may be too acid for it; the soil acidity estimate is\n  uncertain; temperature a little too low)\nThe check on yearly rain is rough: the tables we use do not say if their rain\nrange is for a year or for the growing season.\n\n------------------------------------------------------------------------------\n6. KEEPING SOIL AND WATER\nThese are things that keep soil and water. Each one comes from a study; ask\nyour extension agent which fit your field.\n  - Keep the soil covered with residue or mulch\n  - Cover about 70 to 75 percent of the soil surface, which needs 4 to 6\n    tonnes per hectare (about 1.6 to 2.4 tonnes per acre) of mulch\n  - Do not leave long bare fallow periods\n  - A cover crop between rows cuts soil loss compared with sole maize\n  - Reduced or no tillage keeps more soil moisture\n  - A legume cover crop uses soil water while it grows and conserves it\n    afterwards\n\n------------------------------------------------------------------------------\n7. WHAT WE DO NOT KNOW, AND WHAT TO CHECK\nWe do not have these things, so please check them yourself or with your agent:\n  - Get a soil test. The soil numbers above are computer estimates for a 30 m\n    square, not a measurement on your field.\n  - We do not know your field size, drainage or flooding, whether you own or\n    rent the land, your labour, your seed and fertiliser supply, or your\n    market. Those decide a lot.\n  - We do not know if Striga is on your field. Ask your agent to help you\n    look.\n  - Satellite pictures of green plants and soil moisture are not prepared for\n    your area, so they were not used.\n  - The soil acidity numbers are estimates and could be wrong for: Yam. A soil\n    test will settle it.\n  - In some years your season is shorter than a normal year, so ask which\n    crops and varieties suit a short season.\n  - More choices fit your area than we show: N10. Ask your agent.\n\n------------------------------------------------------------------------------\n8. SMALL PRINT\nWeather: NASA POWER (modelled). Soil: iSDAsoil (modelled, 30 m). Slope:\nNASADEM (NASA). Crop needs: EcoCrop and FAO tables. Rotation evidence:\npublished Nigerian and African studies listed in the detailed file.\nUnits: 1 hectare is about 2.5 acres, and the figures per acre are worked out\nfrom the ones per hectare. kg = kilograms, t = tonnes, mm = millimetres of\nrain, g per kg = grams per kilogram. Kilograms of nitrogen or phosphorus are\nthe plant food in the fertiliser, not the weight of the bag: your agent can\ntell you how many bags that is.\nA longer report for your extension agent is available as a file.\nThis tool supports your judgment and your extension agent. It does not replace\nthem.\n==============================================================================\n",
+  "advice_page": {
+    "title": "CROP ROTATION ADVICE FOR YOUR FARM",
+    "place": {
+      "lga": "Kajuru",
+      "state": "Kaduna",
+      "zone": "North West",
+      "data_from": null,
+      "data_from_text": null
+    },
+    "made": "2026-11-15",
+    "weather_years": ["2001", "2025"],
+    "intro": [
+      "THIS IS ADVICE TO TALK ABOUT, NOT AN ORDER.\nPlease show it to your extension agent. They know your field, your market and the local rules. This tool has not seen your field.",
+      "Do not buy or mix fertiliser or chemicals from this page. Ask your extension agent for the amount for your own plot."
+    ],
+    "land": {
+      "heading": "1. YOUR LAND",
+      "lines": [
+        "Soil acidity (pH): about 5.7. The soil map says it is most likely between 5.5 and 5.9.",
+        "The soil is sandy clay loam, both at the top and deeper down.",
+        "Organic carbon in the top 20 cm: 6.4 g per kg. A soil test would tell you how this compares with good soil.",
+        "The land slopes about 2 degrees at this spot (flat ground is 0).",
+        "The soil acidity estimate is in the best range for: Cassava, Cowpea (beans), Groundnut (peanut), Maize, Millet, Rice, Sorghum (guinea corn), Soybean.",
+        "The soil may be too acid for: Yam."
+      ],
+      "facts": {
+        "ph": { "value": 5.7, "low": 5.5, "high": 5.9 },
+        "carbon": 6.4,
+        "texture": "Sandy Clay Loam",
+        "deep_texture": "Sandy Clay Loam",
+        "fcc": null,
+        "cover": null,
+        "slope": 1.789557416500297,
+        "ph_crops": {
+          "ok": [
+            "Cassava",
+            "Cowpea (beans)",
+            "Groundnut (peanut)",
+            "Maize",
+            "Millet",
+            "Rice",
+            "Sorghum (guinea corn)",
+            "Soybean"
+          ],
+          "out_low": ["Yam"]
+        }
+      },
+      "elevation_m": 678.0
+    },
+    "rain": {
+      "heading": "2. RAIN AND THE GROWING SEASON",
+      "lines": [
+        "In a normal year about 1,370 mm of rain falls.",
+        "The rains usually start around 31 May and the growing season ends around 5 Nov, roughly 165 days. This is a computer estimate from weather data.",
+        "In about 1 year out of 4 the season is only 142 days or shorter.",
+        "The weather source gave rain totals that look wrong for 2020, 2021, 2022. We left those years out. Please do not trust year-to-year rain details too much.",
+        "The planting months in section 4 are what farmers in your zone report. They can differ from the computer estimate above. Trust what you and your neighbours know."
+      ],
+      "facts": {
+        "rain": 1370.2990909090906,
+        "start": "31 May",
+        "end": "5 Nov",
+        "days": 165.0,
+        "short": 142.25,
+        "second": 0.09090909090909091,
+        "suspect": [2020, 2021, 2022]
+      }
+    },
+    "told": {
+      "heading": "3. WHAT YOU TOLD US",
+      "lines": [
+        "Last season: Sorghum (guinea corn)",
+        "You told us about one season, so we cannot see a pattern."
+      ],
+      "name": "Cereal after cereal",
+      "option": "A"
+    },
+    "choices": {
+      "heading": "4. YOUR CHOICES",
+      "notices": [
+        "Do not buy or mix fertiliser or chemicals from this page. Ask your extension agent for the amount for your own plot."
+      ],
+      "items": [
+        {
+          "option_id": "A",
+          "role": "existing",
+          "role_label": "KEEP WHAT YOU DO NOW",
+          "name": "Cereal after cereal",
+          "what": "You grow cereals such as maize, sorghum, millet or rice one season after another.",
+          "steps": [
+            {
+              "year": 1,
+              "season": "main",
+              "fallow": false,
+              "crop": "Sorghum (guinea corn)",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 1: Sorghum (guinea corn), usually planted Apr to Jul"
+            },
+            {
+              "year": 2,
+              "season": "main",
+              "fallow": false,
+              "crop": "Sorghum (guinea corn)",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 2: Sorghum (guinea corn), usually planted Apr to Jul"
+            },
+            {
+              "year": 3,
+              "season": "main",
+              "fallow": false,
+              "crop": "Sorghum (guinea corn)",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 3: Sorghum (guinea corn), usually planted Apr to Jul"
+            },
+            {
+              "year": 4,
+              "season": "main",
+              "fallow": false,
+              "crop": "Sorghum (guinea corn)",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 4: Sorghum (guinea corn), usually planted Apr to Jul"
+            }
+          ],
+          "two_seasons_note": null,
+          "fit": [{ "crop": "Sorghum (guinea corn)", "score": 70 }],
+          "notices": [],
+          "help": [
+            "You need no new seed or market.",
+            "Sorghum and millet cope with less rain than maize."
+          ],
+          "watch": [
+            "Striga, a parasitic weed, attacks maize, sorghum, rice and millet, so changing from one cereal to another is unlikely to reduce it.",
+            "Fall armyworm attacks maize, rice and sorghum.",
+            "Maize every season uses up soil nitrogen and organic matter. In one Nigerian trial, maize yields fell over the years.",
+            "Sorghum smut can stay in the soil for years, so grow sorghum on the same field only once in four years."
+          ],
+          "issues": [
+            "Years 1, 2, 3, 4: head smut lives in the soil for years, so grow sorghum on the same field only once in 4 years"
+          ],
+          "priorities": [
+            {
+              "key": "organic_matter",
+              "label": "Add organic matter and keep crop residue",
+              "text": "Add organic matter and keep crop residue: this is the comparison point"
+            },
+            {
+              "key": "inputs",
+              "label": "Keep seed, fertiliser and labour needs low",
+              "text": "Keep seed, fertiliser and labour needs low: this is the comparison point"
+            }
+          ],
+          "conditions": [],
+          "confidence": {
+            "level": "M",
+            "text": "some evidence",
+            "where": "trials at Ibadan and Zaria and reviews across Africa"
+          },
+          "ask": "your extension agent about checking for Striga and armyworm on your field"
+        },
+        {
+          "option_id": "B",
+          "role": "other",
+          "role_label": "ANOTHER WAY TO ROTATE",
+          "name": "A legume and a cereal in turns",
+          "what": "You grow a legume (cowpea, groundnut or soybean) one season and a cereal the next, in turns.",
+          "steps": [
+            {
+              "year": 1,
+              "season": "main",
+              "fallow": false,
+              "crop": "Cowpea (beans)",
+              "also": [],
+              "months": "May to Aug",
+              "text": "Year 1: Cowpea (beans), usually planted May to Aug"
+            },
+            {
+              "year": 2,
+              "season": "main",
+              "fallow": false,
+              "crop": "Millet",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 2: Millet, usually planted Apr to Jul"
+            },
+            {
+              "year": 3,
+              "season": "main",
+              "fallow": false,
+              "crop": "Cowpea (beans)",
+              "also": [],
+              "months": "May to Aug",
+              "text": "Year 3: Cowpea (beans), usually planted May to Aug"
+            },
+            {
+              "year": 4,
+              "season": "main",
+              "fallow": false,
+              "crop": "Millet",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 4: Millet, usually planted Apr to Jul"
+            }
+          ],
+          "two_seasons_note": null,
+          "fit": [
+            { "crop": "Cowpea (beans)", "score": 90 },
+            { "crop": "Millet", "score": 80 }
+          ],
+          "notices": [
+            "The tests above were done with other crops. For Millet the evidence is weaker or missing."
+          ],
+          "help": [
+            "Across Africa, a cereal grown after a legume gave on average about 41% more grain than a cereal after a cereal, about 0.49 tonnes per hectare (about 200 kg per acre). Maize responded more than sorghum or millet, but that comparison is weak and the gain for sorghum and millet was not certain.",
+            "Legumes can put nitrogen into the soil. In the northern savanna soybean left about 56 to 95 kg of nitrogen per hectare (about 23 to 38 kg per acre), but only when its roots are counted and the stalks stay in the field. When the grain is taken away the balance is often negative.",
+            "On 12 farmers' fields in Kaduna that had Striga, maize after cowpea gave 21% more grain than maize after maize. That trial used Striga-resistant maize and 100 kg of nitrogen per hectare (about 40 kg per acre), and the gain may be smaller where there is no Striga or less fertiliser.",
+            "Soybean and groundnut are the most sold of the crops compared (61% and 57% of the harvest is sold, against 34% for sorghum and 33% for millet)."
+          ],
+          "watch": [
+            "In the drier Sahel zone the gains were smaller and not certain.",
+            "The gain gets smaller when you put on more nitrogen fertiliser.",
+            "In the South West and South East, trials found mixed gains after cowpea and soybean.",
+            "Legumes need good seed, and often phosphorus, drainage and deep enough soil. Check these on your field."
+          ],
+          "issues": [],
+          "priorities": [
+            {
+              "key": "organic_matter",
+              "label": "Add organic matter and keep crop residue",
+              "text": "Add organic matter and keep crop residue: no clear benefit found"
+            },
+            {
+              "key": "inputs",
+              "label": "Keep seed, fertiliser and labour needs low",
+              "text": "Keep seed, fertiliser and labour needs low: needs extra seed, inoculant or work"
+            }
+          ],
+          "conditions": [],
+          "confidence": {
+            "level": "M",
+            "text": "some evidence",
+            "where": "farmers' fields in Kaduna, trials at Zaria and Ibadan, and reviews across Africa"
+          },
+          "ask": "your extension agent and a seed supplier about phosphorus, drainage and seed"
+        },
+        {
+          "option_id": "C",
+          "role": "other",
+          "role_label": "ANOTHER WAY TO ROTATE",
+          "name": "A longer rotation of three or four seasons",
+          "what": "You follow a cereal with a legume, then a different cereal, then a different legume.",
+          "steps": [
+            {
+              "year": 1,
+              "season": "main",
+              "fallow": false,
+              "crop": "Cowpea (beans)",
+              "also": [],
+              "months": "May to Aug",
+              "text": "Year 1: Cowpea (beans), usually planted May to Aug"
+            },
+            {
+              "year": 2,
+              "season": "main",
+              "fallow": false,
+              "crop": "Millet",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 2: Millet, usually planted Apr to Jul"
+            },
+            {
+              "year": 3,
+              "season": "main",
+              "fallow": false,
+              "crop": "Soybean",
+              "also": [],
+              "months": "May to Jul",
+              "text": "Year 3: Soybean, usually planted May to Jul"
+            },
+            {
+              "year": 4,
+              "season": "main",
+              "fallow": false,
+              "crop": "Rice",
+              "also": [],
+              "months": "Apr to Jul",
+              "text": "Year 4: Rice, usually planted Apr to Jul"
+            }
+          ],
+          "two_seasons_note": null,
+          "fit": [
+            { "crop": "Cowpea (beans)", "score": 90 },
+            { "crop": "Millet", "score": 80 },
+            { "crop": "Rice", "score": 90 },
+            { "crop": "Soybean", "score": 100 }
+          ],
+          "notices": ["No test measured this exact pattern."],
+          "help": [
+            "Each crop comes back less often, which helps against diseases that stay in the soil (for sorghum, one crop in four years on the same field; groundnut should not be repeated on the same field).",
+            "Your income and risk are spread over more crops.",
+            "A legume comes in two of every four seasons."
+          ],
+          "watch": [
+            "It will not clear Striga seed, which can stay in the soil for 15 to 20 years.",
+            "No Nigerian trial compares a long rotation with a short one.",
+            "More crops need more labour, seed and markets."
+          ],
+          "issues": [],
+          "priorities": [
+            {
+              "key": "organic_matter",
+              "label": "Add organic matter and keep crop residue",
+              "text": "Add organic matter and keep crop residue: we do not know yet"
+            },
+            {
+              "key": "inputs",
+              "label": "Keep seed, fertiliser and labour needs low",
+              "text": "Keep seed, fertiliser and labour needs low: the evidence says: highest complexity"
+            }
+          ],
+          "conditions": [],
+          "confidence": {
+            "level": "L",
+            "text": "little evidence",
+            "where": "no trial of this exact pattern in Nigeria, only farmers' own reports from Kano and Kaduna"
+          },
+          "ask": "your extension agent about labour, seed and markets for the extra crops"
+        }
+      ]
+    },
+    "crops": {
+      "heading": "5. CROPS THAT FIT YOUR LAND",
+      "intro": "The number is out of 100. A higher number means the crop fits your land and climate better. It does not predict your harvest.",
+      "items": [
+        { "crop": "Cassava", "score": 100, "reasons": [], "all_fine": true },
+        { "crop": "Groundnut (peanut)", "score": 100, "reasons": [], "all_fine": true },
+        { "crop": "Soybean", "score": 100, "reasons": [], "all_fine": true },
+        {
+          "crop": "Cowpea (beans)",
+          "score": 90,
+          "reasons": ["temperature a little too low"],
+          "all_fine": false
+        },
+        {
+          "crop": "Maize",
+          "score": 90,
+          "reasons": ["yearly rain a little too high"],
+          "all_fine": false
+        },
+        {
+          "crop": "Rice",
+          "score": 90,
+          "reasons": ["yearly rain a little too low"],
+          "all_fine": false
+        },
+        {
+          "crop": "Millet",
+          "score": 80,
+          "reasons": ["yearly rain a little too high", "temperature a little too low"],
+          "all_fine": false
+        },
+        {
+          "crop": "Sorghum (guinea corn)",
+          "score": 70,
+          "reasons": ["yearly rain too high for it"],
+          "all_fine": false
+        },
+        {
+          "crop": "Yam",
+          "score": 57,
+          "reasons": [
+            "the soil may be too acid for it",
+            "the soil acidity estimate is uncertain",
+            "temperature a little too low"
+          ],
+          "all_fine": false
+        }
+      ],
+      "caution": "The check on yearly rain is rough: the tables we use do not say if their rain range is for a year or for the growing season."
+    },
+    "measures": {
+      "heading": "6. KEEPING SOIL AND WATER",
+      "intro": "These are things that keep soil and water. Each one comes from a study; ask your extension agent which fit your field.",
+      "items": [
+        "Keep the soil covered with residue or mulch",
+        "Cover about 70 to 75 percent of the soil surface, which needs 4 to 6 tonnes per hectare (about 1.6 to 2.4 tonnes per acre) of mulch",
+        "Do not leave long bare fallow periods",
+        "A cover crop between rows cuts soil loss compared with sole maize",
+        "Reduced or no tillage keeps more soil moisture",
+        "A legume cover crop uses soil water while it grows and conserves it afterwards"
+      ]
+    },
+    "unknown": {
+      "heading": "7. WHAT WE DO NOT KNOW, AND WHAT TO CHECK",
+      "intro": "We do not have these things, so please check them yourself or with your agent:",
+      "items": [
+        "Get a soil test. The soil numbers above are computer estimates for a 30 m square, not a measurement on your field.",
+        "We do not know your field size, drainage or flooding, whether you own or rent the land, your labour, your seed and fertiliser supply, or your market. Those decide a lot.",
+        "We do not know if Striga is on your field. Ask your agent to help you look.",
+        "Satellite pictures of green plants and soil moisture are not prepared for your area, so they were not used.",
+        "The soil acidity numbers are estimates and could be wrong for: Yam. A soil test will settle it.",
+        "In some years your season is shorter than a normal year, so ask which crops and varieties suit a short season.",
+        "More choices fit your area than we show: N10. Ask your agent."
+      ]
+    },
+    "print": {
+      "heading": "8. SMALL PRINT",
+      "lines": [
+        "Weather: NASA POWER (modelled). Soil: iSDAsoil (modelled, 30 m). Slope: NASADEM (NASA). Crop needs: EcoCrop and FAO tables. Rotation evidence: published Nigerian and African studies listed in the detailed file.",
+        "Units: 1 hectare is about 2.5 acres, and the figures per acre are worked out from the ones per hectare. kg = kilograms, t = tonnes, mm = millimetres of rain, g per kg = grams per kilogram. Kilograms of nitrogen or phosphorus are the plant food in the fertiliser, not the weight of the bag: your agent can tell you how many bags that is.",
+        "A longer report for your extension agent is available as a file.",
+        "This tool supports your judgment and your extension agent. It does not replace them."
+      ]
+    }
+  },
+  "advice_error": null
+}

@@ -93,10 +93,10 @@ export interface Land extends Lines {
     slope: number | null;
     ph_crops: {
       ok: string[];
-      low: string[];
-      high: string[];
-      out_low: string[];
-      out_high: string[];
+      low?: string[];
+      high?: string[];
+      out_low?: string[];
+      out_high?: string[];
     };
   } | null;
   elevation_m: number | null;
@@ -146,7 +146,7 @@ export interface AdvicePage {
     data_from_text: string | null;
   };
   made: string;
-  weather_years: [number, number] | null;
+  weather_years: [number | string, number | string] | null;
   intro: string[];
   land: Land;
   rain: Rain;

@@ -1,5 +1,7 @@
 # Voice integration: Milestone A
 
+Milestone B update: Railway URL supplied and direct live text/audio/ID compatibility checks executed. See [VOICE_LIVE_VERIFICATION.md](VOICE_LIVE_VERIFICATION.md) for current findings and release blockers. The initial audit below records what was known during Milestone A.
+
 ## Audit and implementation plan
 
 Existing Next.js 16 App Router, client-side farmer state machine, TanStack Query and agricultural Client remain in place. Results already include rotation discovery, scientific notices, evidence, print/download recovery and deferred secondary views. The manual journey is not replaced.

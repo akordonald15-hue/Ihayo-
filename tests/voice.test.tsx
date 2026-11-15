@@ -15,6 +15,7 @@ import {
 import { HttpVoiceClient, type VoiceClient } from '@/lib/voice/client';
 import { useConversation } from '@/lib/voice/useConversation';
 import VoiceExperience from '@/components/VoiceExperience';
+import liveReport from './fixtures/voice-live-report.json';
 
 const body = toRequest(
   {
@@ -69,6 +70,32 @@ function deferred<T>() {
 }
 
 describe('voice contract and HTTP adapter', () => {
+  it('accepts the captured Railway report without changing its omitted fields or scientific content', () => {
+    const response = parseVoiceResponse(liveReport);
+    const advice = completedVoiceAdvice(response);
+    expect(advice?.page).toBe(liveReport.advice_page);
+    expect(advice?.page.weather_years).toEqual(['2001', '2025']);
+    expect(advice?.page.land.facts?.ph_crops.low).toBeUndefined();
+    expect(advice?.page.choices.notices).toEqual(liveReport.advice_page.choices.notices);
+    expect(advice?.page.unknown).toEqual(liveReport.advice_page.unknown);
+    expect(advice?.text).toBe(liveReport.advice_text);
+    expect(
+      completedVoiceAdvice({
+        ...response,
+        advice_page: { ...liveReport.advice_page, weather_years: ['last year', '2025'] },
+      }),
+    ).toBeNull();
+  });
+  it('enforces the deployed 3000-character text limit before sending', async () => {
+    const transport = vi.fn().mockResolvedValue(Response.json(partial));
+    const client = new HttpVoiceClient(transport);
+    await expect(
+      client.text('x'.repeat(3001), null, new AbortController().signal),
+    ).rejects.toMatchObject({ code: 'invalid_message' });
+    expect(transport).not.toHaveBeenCalled();
+    await client.text('x'.repeat(3000), null, new AbortController().signal);
+    expect(transport).toHaveBeenCalledTimes(1);
+  });
   it('retains unknown context keys and refuses malformed known fields', () => {
     expect(parseVoiceResponse(partial)).toBe(partial);
     expect(() => parseVoiceResponse({ confidence: 'probably' })).toThrow(VoiceError);
@@ -262,6 +289,21 @@ describe('conversation controller', () => {
 });
 
 describe('farmer conversation UI', () => {
+  it('renders a captured live Railway recommendation through the shared results with its warnings intact', async () => {
+    const client = fake();
+    vi.mocked(client.text).mockResolvedValue(parseVoiceResponse(liveReport));
+    render(<VoiceExperience client={client} />);
+    await screen.findByRole('button', { name: 'Start recording' });
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Controlled farm test' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Send message' }));
+    const open = await screen.findByRole('button', { name: 'Open my planting options' });
+    fireEvent.click(open);
+    expect(screen.getByRole('heading', { name: liveReport.advice_page.title })).toBeVisible();
+    for (const warning of liveReport.advice_page.choices.notices)
+      for (const notice of screen.getAllByText(warning)) expect(notice).toBeVisible();
+    expect(screen.getByText(liveReport.advice_page.unknown.intro)).toBeVisible();
+    expect(screen.getByText(/2001.2025/)).toBeVisible();
+  });
   it('preserves authoritative conversation context across the independent manual fallback', async () => {
     const transport = vi.spyOn(globalThis, 'fetch').mockImplementation(async (input) => {
       const path = new URL(String(input), 'https://test.invalid').pathname;

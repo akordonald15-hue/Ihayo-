@@ -15,6 +15,12 @@ const req = (body: unknown, origin = 'https://ihayo.test') =>
     headers: { Origin: origin, 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   });
+it('rejects text exceeding the deployed contract before contacting Railway', async () => {
+  const transport = vi.fn();
+  const response = await proxyVoice(req({ message: 'x'.repeat(3001) }), 'text', transport, env);
+  expect(response.status).toBe(400);
+  expect(transport).not.toHaveBeenCalled();
+});
 it('stays disabled with missing configuration or a closed release gate, without a fallback request', async () => {
   const transport = vi.fn();
   for (const config of [

@@ -174,7 +174,7 @@ export async function proxyVoice(
         )
           throw new VoiceError(
             'invalid_message',
-            'Please enter a message of up to 8,000 characters.',
+            'Please enter a message of up to 3,000 characters.',
             400,
           );
         checkedContext(value.context);

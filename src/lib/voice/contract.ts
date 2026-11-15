@@ -4,7 +4,7 @@ export const MAX_AUDIO_BYTES = 3_500_000;
 export const GUIDE_AUDIO_LIMIT = 25_000_000;
 export const MAX_CONTEXT_BYTES = 512_000;
 export const MAX_RESPONSE_BYTES = 512_000;
-export const MAX_MESSAGE_LENGTH = 8000;
+export const MAX_MESSAGE_LENGTH = 3000;
 export const MAX_RECORDING_SECONDS = 180;
 export const priorityKeys = [
   'nitrogen',
@@ -66,13 +66,20 @@ const one =
   (x) =>
     values.includes(x);
 const strings = arr(str);
+const optional =
+  (check: Check): Check =>
+  (x) =>
+    x === undefined || check(x);
+const year: Check = (x) =>
+  (typeof x === 'number' && Number.isInteger(x) && x >= 1000 && x <= 9999) ||
+  (typeof x === 'string' && /^[1-9]\d{3}$/.test(x));
 const lines = { heading: str, lines: strings };
 const phCrops = obj({
   ok: strings,
-  low: strings,
-  high: strings,
-  out_low: strings,
-  out_high: strings,
+  low: optional(strings),
+  high: optional(strings),
+  out_low: optional(strings),
+  out_high: optional(strings),
 });
 const land = obj({
   ...lines,
@@ -142,7 +149,7 @@ const page = obj({
     data_from_text: nil(str),
   }),
   made: str,
-  weather_years: nil((x) => Array.isArray(x) && x.length === 2 && x.every(num)),
+  weather_years: nil((x) => Array.isArray(x) && x.length === 2 && x.every(year)),
   intro: strings,
   land,
   rain,
