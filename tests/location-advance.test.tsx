@@ -33,7 +33,7 @@ async function start(validation?: Promise<Area[]>) {
   });
   render(<Ihayo />);
   const u = userEvent.setup();
-  await u.click((await screen.findAllByRole('button', { name: 'Explore your land' }))[0]);
+  await u.click((await screen.findAllByRole('button', { name: 'Answer step by step' }))[0]);
   await screen.findByRole('button', { name: /Kaduna 2\/3/ });
   return u;
 }
@@ -81,7 +81,7 @@ it('Back cancels a pending confirmation and duplicate clicks cannot skip crop hi
     await new Promise((r) => setTimeout(r, 1300));
   });
   expect(screen.getByRole('heading', { name: /Every season begins/ })).toBeVisible();
-  await u.click(screen.getAllByRole('button', { name: 'Explore your land' })[0]);
+  await u.click(screen.getAllByRole('button', { name: 'Answer step by step' })[0]);
   expect(screen.getByRole('button', { name: 'Continue' })).toBeVisible();
 }, 10000);
 it('does not advance when the fresh API says previously available records are unavailable', async () => {
@@ -141,7 +141,7 @@ it('clears loading when Back cancels slow validation, without accepting its late
   const u = await start(validation.promise);
   await selectKajuru(u);
   await u.click(screen.getByRole('button', { name: 'Back' }));
-  await u.click(screen.getAllByRole('button', { name: 'Explore your land' })[0]);
+  await u.click(screen.getAllByRole('button', { name: 'Answer step by step' })[0]);
   expect(screen.queryByText(/Checking records for your area/)).not.toBeInTheDocument();
   expect(screen.getByText('Records not confirmed for this area')).toBeVisible();
   await act(async () => validation.resolve([{ lga: 'Kajuru', ready: true, lat: 10, lon: 7 }]));

@@ -1,0 +1,223 @@
+.voice-flow-pane[hidden] {
+  display: none !important;
+}
+.voice-flow-pane .brand-button {
+  text-decoration: none;
+}
+.voice-main {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: clamp(32px, 5vw, 72px) var(--page-edge);
+}
+.voice-heading {
+  max-width: 65ch;
+  margin-bottom: 32px;
+}
+.voice-heading h1 {
+  font-size: clamp(36px, 5vw, 62px);
+  line-height: 1.12;
+  letter-spacing: -0.045em;
+}
+.voice-heading > p {
+  line-height: 1.7;
+}
+.voice-privacy {
+  color: var(--muted);
+  font-size: 14px;
+}
+.voice-unavailable,
+.voice-question,
+.voice-ready,
+.voice-details,
+.voice-input {
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  margin-block: 24px;
+  background: #fffdf7;
+  min-width: 0;
+}
+.voice-question {
+  border-left: 4px solid var(--green);
+}
+.voice-question > p {
+  color: var(--green);
+  font-size: 14px;
+}
+.voice-main h2 {
+  font-size: clamp(23px, 2.7vw, 32px);
+  line-height: 1.3;
+}
+.voice-main :is(h1, h2, p, dd, li) {
+  overflow-wrap: anywhere;
+}
+.voice-main h2:focus {
+  outline-offset: 8px;
+}
+.voice-details dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.voice-details dl > div {
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  min-width: 0;
+}
+.voice-details dt {
+  color: var(--muted);
+  font-size: 14px;
+  margin-bottom: 6px;
+}
+.voice-details dd {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+}
+.voice-details ol {
+  padding-left: 20px;
+  margin: 0;
+}
+.voice-input form {
+  display: grid;
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  margin-top: 24px;
+  padding-top: 24px;
+}
+.voice-input label {
+  font-weight: 600;
+}
+.voice-input textarea {
+  width: 100%;
+  min-height: 130px;
+  max-width: 100%;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+  font: inherit;
+  font-size: 17px;
+  color: var(--deep);
+  background: var(--ivory);
+}
+.voice-input form .button {
+  justify-self: start;
+}
+.voice-recording-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.voice-recording-controls > p {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 15px;
+  color: var(--green);
+}
+.voice-recording-limit {
+  font-size: 14px;
+  color: var(--muted);
+}
+.voice-timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 26px;
+  font-weight: 600;
+}
+.voice-stop {
+  background: #8d342a;
+  color: #fffdf7;
+}
+.voice-stop:hover {
+  background: #74291f;
+  color: #fffdf7;
+}
+.voice-audio-review {
+  padding-top: 20px;
+}
+.voice-audio-review audio {
+  width: 100%;
+  margin-bottom: 16px;
+}
+.voice-processing {
+  padding-top: 20px;
+}
+.voice-error {
+  border-left: 4px solid #a85c25;
+  padding: 8px 20px;
+  margin-block: 24px;
+}
+.voice-actions,
+.voice-return-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+.voice-return-bar {
+  padding: 18px var(--page-edge);
+  background: #e8ecdf;
+}
+.voice-return-bar p {
+  font-size: 14px;
+  margin: 0;
+  max-width: 70ch;
+}
+.voice-last-message {
+  padding-block: 16px;
+}
+.voice-last-message summary,
+.voice-main > details > summary {
+  min-height: 44px;
+  cursor: pointer;
+}
+.voice-text-report {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: inherit;
+  background: #fffdf7;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.landing-v2 .hero-actions .hero-manual {
+  border: 1px solid #eee7d5;
+  color: #fffdf7;
+  background: #071d2d66;
+}
+.landing-v2 .hero-actions .hero-manual:hover {
+  background: #071d2d;
+}
+.voice-entry > span {
+  display: inline-block;
+  font-size: 12px;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: #071d2d;
+  color: #fffdf7;
+}
+@media (max-width: 600px) {
+  .voice-main {
+    padding: 32px 20px;
+  }
+  .voice-details dl {
+    grid-template-columns: 1fr;
+  }
+  .voice-recording-controls .button,
+  .voice-input form .button,
+  .voice-ready .button,
+  .voice-unavailable .button {
+    width: 100%;
+  }
+  .voice-heading h1 {
+    font-size: 38px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .voice-main * {
+    animation: none !important;
+    transition: none !important;
+  }
+}

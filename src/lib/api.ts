@@ -101,7 +101,7 @@ export class Client {
   evidence = (id: string) => this.request<Evidence>(`/evidence/${encodeURIComponent(id)}`);
   async withRecovery<T>(
     advice: Advice,
-    request: AdviceRequest,
+    request: AdviceRequest | null,
     operation: (id: string) => Promise<T>,
     refresh: (a: Advice) => void,
   ): Promise<T> {
@@ -109,6 +109,7 @@ export class Client {
       return await operation(advice.advice_id);
     } catch (e) {
       if (!(e instanceof ApiError) || e.code !== 'advice_expired') throw e;
+      if (!request) throw new ApiError('voice_advice_expired', 'These voice results have expired. Return to your conversation to request updated advice.', 410);
       const fresh = await this.advice(request);
       refresh(fresh);
       return operation(fresh.advice_id);

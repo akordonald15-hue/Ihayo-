@@ -7,7 +7,7 @@ export const ui = {
   heroSupport: 'Make yours with a little more clarity.',
   heroDescription:
     'Understand your land, explore your crop history, and compare planting options grounded in environmental data and agricultural research.',
-  exploreLand: 'Explore your land',
+  exploreLand: 'Answer step by step',
   howItWorks: 'How Ihayo works',
   navigation: 'Main navigation',
   openNavigation: 'Open navigation',

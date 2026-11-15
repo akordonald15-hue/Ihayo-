@@ -1,5 +1,5 @@
 'use client';
-import { ArrowDown, ArrowRight, BookOpen, ShieldCheck } from 'lucide-react';
+import { ArrowDown, ArrowRight, BookOpen, ShieldCheck, Mic } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { Health, Questions } from '@/lib/types';
 import { ui } from '@/lib/copy';
@@ -9,6 +9,8 @@ import ServiceStatus from './ServiceStatus';
 import HeroSlideshow from './HeroSlideshow';
 export default function Welcome({
   ready,
+  voiceAvailable = false,
+  mainId = 'main',
   questions,
   health,
   error,
@@ -19,6 +21,8 @@ export default function Welcome({
   onRetry,
 }: {
   ready: boolean;
+  voiceAvailable?: boolean;
+  mainId?: string;
   questions?: Questions;
   health?: Health;
   error: Error | null;
@@ -74,7 +78,7 @@ export default function Welcome({
       </a>
     );
   return (
-    <main ref={home} id="main" className="editorial-home landing-v2">
+    <main ref={home} id={mainId} className="editorial-home landing-v2">
       <section className="cinema-hero" aria-labelledby="hero-heading">
         <HeroSlideshow />
         <div className="hero-shade" />
@@ -87,7 +91,11 @@ export default function Welcome({
             Explore what to grow next, with your farm’s history and the evidence in view.
           </p>
           <div className="hero-actions">
-            {begin()}
+            <a className="button gold-button voice-entry" href="/talk">
+              <Mic size={20} />
+              Talk to Ihayo{!voiceAvailable && <span>Unavailable</span>}
+            </a>
+            {begin('button hero-manual')}
             <a className="hero-secondary" href="#how-it-works">
               See the experience
               <ArrowDown size={18} />

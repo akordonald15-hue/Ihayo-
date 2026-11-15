@@ -29,7 +29,13 @@ import SiteNavigation from './SiteNavigation';
 import { PlaceForm, ProfileCard, Review, Seasons } from './FarmForm';
 import Welcome from './Welcome';
 import Results from './Results';
-export default function Ihayo() {
+export default function Ihayo({
+  voiceAvailable = false,
+  isolatedManual = false,
+}: {
+  voiceAvailable?: boolean;
+  isolatedManual?: boolean;
+}) {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -38,15 +44,23 @@ export default function Ihayo() {
   );
   return (
     <QueryClientProvider client={queryClient}>
-      <Experience />
+      <Experience voiceAvailable={voiceAvailable} isolatedManual={isolatedManual} />
     </QueryClientProvider>
   );
 }
-function Experience() {
+function Experience({
+  voiceAvailable,
+  isolatedManual,
+}: {
+  voiceAvailable: boolean;
+  isolatedManual: boolean;
+}) {
   const [fixture, setFixture] = useState(false);
   const client = useMemo(() => new Client(fixture), [fixture]);
   const [draft, setDraft] = useState<Draft>(emptyDraft);
-  const [screen, setScreen] = useState<'welcome' | 'form' | 'working' | 'results'>('welcome');
+  const [screen, setScreen] = useState<'welcome' | 'form' | 'working' | 'results'>(
+    isolatedManual ? 'form' : 'welcome',
+  );
   const [step, setStep] = useState(0);
   const [fieldIndex, setFieldIndex] = useState(0);
   const [advice, setAdvice] = useState<Advice | null>(null);
@@ -86,6 +100,10 @@ function Experience() {
   });
   const q = questions.data;
   useEffect(() => {
+    if (isolatedManual) {
+      setHydrated(true);
+      return;
+    }
     const saved = readSession<{
       draft: Draft;
       fixture: boolean;
@@ -115,7 +133,7 @@ function Experience() {
     setHydrated(true);
   }, []);
   useEffect(() => {
-    if (hydrated)
+    if (hydrated && !isolatedManual)
       writeSession('ihayo-session-v1', {
         draft,
         fixture,
@@ -249,7 +267,7 @@ function Experience() {
   };
   return (
     <>
-      <a className="skip-link" href="#main">
+      <a className="skip-link" href={isolatedManual ? '#manual-main' : '#main'}>
         {ui.skip}
       </a>
       {fixture && (
@@ -286,6 +304,8 @@ function Experience() {
       <div ref={heading}>
         {screen === 'welcome' ? (
           <Welcome
+            mainId={isolatedManual ? 'manual-main' : 'main'}
+            voiceAvailable={voiceAvailable}
             ready={!!ready}
             questions={q}
             health={health.data}
@@ -304,7 +324,7 @@ function Experience() {
             onRetry={retry}
           />
         ) : screen === 'working' ? (
-          <main id="main" className="working">
+          <main id={isolatedManual ? 'manual-main' : 'main'} className="working">
             <div className="growing-mark">
               <BrandMark />
             </div>
@@ -320,6 +340,7 @@ function Experience() {
           </main>
         ) : screen === 'results' && advice && request ? (
           <Results
+            idPrefix={isolatedManual ? 'manual-' : ''}
             client={client}
             advice={advice}
             request={request}
@@ -328,11 +349,11 @@ function Experience() {
             onEdit={() => changeStep(4)}
           />
         ) : !ready ? (
-          <main id="main" className="form-main">
+          <main id={isolatedManual ? 'manual-main' : 'main'} className="form-main">
             {serviceError ? <ErrorBox message={ui.unavailable} retry={retry} /> : <Busy />}
           </main>
         ) : (
-          <main id="main" className="form-shell">
+          <main id={isolatedManual ? 'manual-main' : 'main'} className="form-shell">
             <aside className="journey">
               <p className="eyebrow">{ui.yourFarm}</p>
               <h2>{ui.journeyTitle}</h2>

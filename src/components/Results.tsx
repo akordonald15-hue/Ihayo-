@@ -92,13 +92,15 @@ export default function Results({
   onRefresh,
   onRestart,
   onEdit,
+  idPrefix = '',
 }: {
   client: Client;
   advice: Advice;
-  request: AdviceRequest;
+  request: AdviceRequest | null;
   onRefresh: (a: Advice) => void;
   onRestart: () => void;
   onEdit: () => void;
+  idPrefix?: string;
 }) {
   const p = a.page;
   const [evidence, setEvidence] = useState<string | null>(null);
@@ -133,7 +135,7 @@ export default function Results({
     }
   }
   return (
-    <main id="main" className="results">
+    <main id={`${idPrefix}main`} className="results">
       <div className="results-heading">
         <p className="eyebrow">
           {p.place.lga} / {p.place.state}
@@ -157,26 +159,30 @@ export default function Results({
         </button>
       </div>
       <nav className="results-shortcuts no-print" aria-label="Explore your results">
-        <a href="#rotation-choices">Your patterns</a>
-        <a href="#result-checks">Important checks</a>
-        <a href="#weather-lab">Weather what-if</a>
-        <a href="#result-records">Local records</a>
-        <a href="#download-report">Save for my agent</a>
+        <a href={`#${idPrefix}rotation-choices`}>Your patterns</a>
+        <a href={`#${idPrefix}result-checks`}>Important checks</a>
+        <a href={`#${idPrefix}weather-lab`}>Weather what-if</a>
+        <a href={`#${idPrefix}result-records`}>Local records</a>
+        <a href={`#${idPrefix}download-report`}>Save for my agent</a>
       </nav>
       <div className="intro-advice">
         <Lines values={p.intro} />
       </div>
-      <Section title={p.choices.heading} id="rotation-choices" className="choices-section">
+      <Section
+        title={p.choices.heading}
+        id={`${idPrefix}rotation-choices`}
+        className="choices-section"
+      >
         <Lines values={p.choices.notices} className="notice" />
         <RotationExplorer
-          key={`${request.state}/${request.lga}/${p.choices.items.map((c) => c.option_id).join('/')}`}
+          key={`${request?.state ?? p.place.state}/${request?.lga ?? p.place.lga}/${p.choices.items.map((c) => c.option_id).join('/')}`}
           choices={p.choices.items}
           renderChoice={(c) => (
             <ChoiceCard choice={c} onEvidence={() => setEvidence(c.option_id)} />
           )}
         />
       </Section>
-      <div id="result-checks">
+      <div id={`${idPrefix}result-checks`}>
         <Section title={p.unknown.heading} className="uncertainty">
           <p>{p.unknown.intro}</p>
           <Sentences values={p.unknown.items} />
@@ -186,7 +192,7 @@ export default function Results({
         Your next step: discuss the patterns and these checks with your extension agent. Opening a
         pattern does not mean it has been checked on your farm.
       </p>
-      <div id="result-records" />
+      <div id={`${idPrefix}result-records`} />
       <div className="land-rain">
         <Section title={p.land.heading}>
           <Lines values={p.land.lines} />
@@ -223,17 +229,27 @@ export default function Results({
         <p>{p.measures.intro}</p>
         <Sentences values={p.measures.items} />
       </Section>
-      <div id="download-report" />
+      {!a.advice_id && (
+        <p className="notice">
+          A report identifier was not supplied. Downloads and weather tools are unavailable for this
+          response. You can still read and print the report.
+        </p>
+      )}
+      <div id={`${idPrefix}download-report`} />
       <Section title={p.print.heading}>
         <Lines values={p.print.lines} />
         <div className="download-actions no-print">
-          <button className="button" disabled={download} onClick={() => void save('text')}>
+          <button
+            className="button"
+            disabled={download || !a.advice_id}
+            onClick={() => void save('text')}
+          >
             <Download size={18} />
             {ui.saveText}
           </button>
           <button
             className="button secondary"
-            disabled={download}
+            disabled={download || !a.advice_id}
             onClick={() => void save('agent-report')}
           >
             <BookOpen size={18} />
@@ -248,41 +264,45 @@ export default function Results({
         <div role="status">{saved && <p>{ui.saved}</p>}</div>
         {error && <ErrorBox message={error} />}
       </Section>
-      <details
-        className="results-disclosure no-print"
-        id="weather-lab"
-        onToggle={(event) => {
-          if (event.currentTarget.open) setWeatherOpened(true);
-        }}
-      >
-        <summary>
-          <span>Try a weather what-if</span>
-          <span>Live exploration of historical weather, not a forecast</span>
-        </summary>
-        {weatherOpened && (
-          <WeatherScenario
-            key={request.state + request.lga}
-            client={client}
-            advice={a}
-            request={request}
-            onRefresh={onRefresh}
-          />
-        )}
-      </details>
-      <details
-        className="results-disclosure no-print"
-        onToggle={(event) => {
-          if (event.currentTarget.open) setChartsOpened(true);
-        }}
-      >
-        <summary>
-          <span>Explore the weather records</span>
-          <span>Charts, numbers and source limitations</span>
-        </summary>
-        {chartsOpened && (
-          <WeatherCharts client={client} advice={a} request={request} onRefresh={onRefresh} />
-        )}
-      </details>
+      {!!a.advice_id && (
+        <>
+          <details
+            className="results-disclosure no-print"
+            id={`${idPrefix}weather-lab`}
+            onToggle={(event) => {
+              if (event.currentTarget.open) setWeatherOpened(true);
+            }}
+          >
+            <summary>
+              <span>Try a weather what-if</span>
+              <span>Live exploration of historical weather, not a forecast</span>
+            </summary>
+            {weatherOpened && (
+              <WeatherScenario
+                key={p.place.state + p.place.lga}
+                client={client}
+                advice={a}
+                request={request}
+                onRefresh={onRefresh}
+              />
+            )}
+          </details>
+          <details
+            className="results-disclosure no-print"
+            onToggle={(event) => {
+              if (event.currentTarget.open) setChartsOpened(true);
+            }}
+          >
+            <summary>
+              <span>Explore the weather records</span>
+              <span>Charts, numbers and source limitations</span>
+            </summary>
+            {chartsOpened && (
+              <WeatherCharts client={client} advice={a} request={request} onRefresh={onRefresh} />
+            )}
+          </details>
+        </>
+      )}
       <details
         className="results-disclosure no-print"
         onToggle={(event) => {
@@ -293,7 +313,13 @@ export default function Results({
           <span>{ui.map}</span>
           <span>Area coverage, not exact farm boundaries</span>
         </summary>
-        {mapOpened && <AreaMap client={client} place={p.place} from={request.use_data_from} />}
+        {mapOpened && (
+          <AreaMap
+            client={client}
+            place={p.place}
+            from={request?.use_data_from ?? p.place.data_from}
+          />
+        )}
       </details>
       <div className="restart no-print">
         <p>{ui.footer}</p>

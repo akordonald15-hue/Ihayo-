@@ -15,7 +15,7 @@ export function WeatherScenario({
 }: {
   client: Client;
   advice: Advice;
-  request: AdviceRequest;
+  request: AdviceRequest | null;
   onRefresh: (a: Advice) => void;
 }) {
   const [values, setValues] = useState(defaults);
@@ -351,7 +351,7 @@ export function WeatherCharts({
 }: {
   client: Client;
   advice: Advice;
-  request: AdviceRequest;
+  request: AdviceRequest | null;
   onRefresh: (a: Advice) => void;
 }) {
   const {
