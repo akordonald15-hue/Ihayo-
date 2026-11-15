@@ -33,6 +33,7 @@ export interface VoiceResponse extends Record<string, unknown> {
   advice_page?: unknown;
   advice_id?: string | null;
   advice_text?: string | null;
+  transcript?: string | null;
 }
 export class VoiceError extends Error {
   constructor(
@@ -181,6 +182,7 @@ export function parseVoiceResponse(value: unknown): VoiceResponse {
     'advice_error',
     'advice_id',
     'advice_text',
+    'transcript',
   ])
     if (value[key] != null && !str(value[key])) throw invalid();
   for (const key of ['irrigated', 'striga', 'waterlogged', 'enough_workers', 'easy_seed'])

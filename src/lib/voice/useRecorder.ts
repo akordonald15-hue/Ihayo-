@@ -213,5 +213,15 @@ export function useRecorder() {
       );
     }
   }
-  return { status, audio, url, seconds, error, start, stop, discard };
+  return {
+    status,
+    audio,
+    url,
+    seconds,
+    error,
+    start,
+    stop,
+    discard,
+    stream: status === 'recording' ? stream.current : null,
+  };
 }
