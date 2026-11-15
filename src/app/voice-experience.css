@@ -266,7 +266,7 @@
 .voice-recording-limit {
   margin: 12px 0 22px;
   text-align: center;
-  color: #7a8073;
+  color: #65705d;
   font-size: 10px;
   letter-spacing: 0.02em;
 }
@@ -321,6 +321,8 @@
   padding: 24px;
 }
 .voice-section-label {
+  margin: 0;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -331,7 +333,7 @@
 .voice-section-label > span:last-child:not(:first-child) {
   margin-left: auto;
   font-size: 10px;
-  color: #868c7f;
+  color: #67725f;
 }
 .voice-welcome-message {
   display: flex;
@@ -471,7 +473,7 @@
   font-size: 12px;
 }
 .voice-caption {
-  color: #727b6c;
+  color: #5d6b57;
   font-size: 11px;
   line-height: 1.65;
   display: block;
@@ -759,7 +761,7 @@
   padding-top: 12px;
 }
 .voice-details dt {
-  color: #74806a;
+  color: #5c6b53;
   font-size: 10px;
   margin-bottom: 4px;
 }
@@ -833,7 +835,7 @@
 .voice-privacy {
   margin: 0 24px 24px;
   font-size: 11px;
-  color: #6e7967;
+  color: #5e6d55;
   line-height: 1.8;
   border-top: 1px solid #ecebdf;
   padding-top: 15px;
@@ -883,7 +885,7 @@
   justify-content: space-between;
   padding-block: 20px;
   font-size: 10px;
-  color: #7b8271;
+  color: #626d58;
 }
 .voice-shell.has-results {
   background: var(--ivory);
@@ -1117,6 +1119,8 @@
     padding: 20px 18px;
   }
   .voice-section-label {
+    margin: 0;
+    font-weight: 500;
     font-size: 10px;
   }
   .voice-section-label > span:last-child:not(:first-child) {
@@ -1196,5 +1200,182 @@
   .landing-v2 .hero-actions .voice-entry svg {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* One composer for both typed replies and voice notes. */
+.voice-center {
+  display: flex;
+  flex-direction: column;
+  min-height: 670px;
+}
+.voice-chat-heading {
+  padding: 23px 24px;
+  border-bottom: 1px solid #ecebdf;
+}
+.voice-conversation {
+  flex: 1;
+  border-top: 0;
+}
+.voice-chat-composer {
+  margin-top: auto;
+  padding-top: 0;
+  border-top: 0;
+}
+.voice-chat-composer .voice-composer-field {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 14px 14px 8px;
+  border-radius: 24px;
+  background: #fffef9;
+  box-shadow: 0 3px 16px #223c2607;
+}
+.voice-chat-composer textarea {
+  min-height: 52px;
+  padding: 3px 5px;
+}
+.voice-composer-toolbar {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  width: 100%;
+}
+.voice-composer-hint {
+  margin-right: auto;
+  padding-left: 5px;
+  color: #65725e;
+  font-size: 10px;
+}
+.voice-composer-mic {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #244735;
+  flex-shrink: 0;
+  transition:
+    background 0.18s ease,
+    transform 0.18s ease;
+}
+.voice-composer-mic:hover:not(:disabled) {
+  background: #edf0e4;
+}
+.voice-composer-mic:active:not(:disabled) {
+  transform: scale(0.94);
+}
+.voice-composer-mic.is-recording {
+  background: #f6e8df;
+  color: #8a4938;
+}
+.voice-chat-composer .voice-send {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+.voice-inline-recording {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px 13px;
+  color: #6f4737;
+  font-size: 12px;
+}
+.voice-inline-recording .voice-dot {
+  background: #a15f44;
+}
+.voice-inline-recording .voice-waveform {
+  height: 22px;
+  margin: 0 0 0 auto;
+}
+.voice-inline-recording .voice-waveform > span:not(.sr-only) {
+  height: 22px;
+  width: 2px;
+}
+.voice-inline-recording output {
+  font-variant-numeric: tabular-nums;
+  min-width: 35px;
+  text-align: right;
+}
+.voice-cancel-recording {
+  font-size: 10px;
+}
+.voice-queued-note {
+  align-self: flex-end;
+  width: calc(100% - 48px);
+  margin: 0 24px 18px;
+  animation: voice-arrive 0.25s ease both;
+}
+.voice-queued-note audio {
+  width: 100%;
+  height: 38px;
+  display: block;
+  margin: 13px 0 6px;
+}
+.voice-draft-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 10px;
+  color: #5d6c52;
+}
+.voice-draft-footer .text-button {
+  font-size: 10px;
+  min-height: 40px;
+}
+.voice-composer-disclosure {
+  font-size: 10px;
+  line-height: 1.7;
+  color: #65725e;
+  margin: 11px 5px 0;
+}
+.voice-chat-composer .voice-processing {
+  padding: 18px 0 0;
+}
+.voice-chat-composer .voice-error {
+  margin: 14px 0 0;
+}
+@media (max-width: 800px) {
+  .voice-center {
+    min-height: 510px;
+  }
+}
+@media (max-width: 600px) {
+  .voice-center {
+    min-height: 430px;
+  }
+  .voice-chat-heading {
+    padding: 20px 18px;
+  }
+  .voice-chat-composer {
+    padding: 0 18px 18px;
+    border: 0;
+  }
+  .voice-chat-composer .voice-composer-field {
+    padding: 12px 10px 7px;
+    border-radius: 22px;
+  }
+  .voice-queued-note {
+    width: calc(100% - 36px);
+    margin-inline: 18px;
+  }
+  .voice-composer-hint {
+    font-size: 9px;
+  }
+  .voice-composer-disclosure {
+    font-size: 9px;
+  }
+  .voice-inline-recording {
+    flex-wrap: wrap;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .voice-composer-mic {
+    transition: none;
   }
 }

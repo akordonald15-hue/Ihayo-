@@ -193,10 +193,10 @@ export function VoiceConversation({
 }) {
   return (
     <section className="voice-conversation" aria-label="Your conversation">
-      <div className="voice-section-label">
+      <h2 className="voice-section-label">
         <span className="voice-dot" />
         Your conversation<span>One step at a time</span>
-      </div>
+      </h2>
       {!turns.length && (
         <div className="voice-welcome-message">
           <span className="voice-avatar">I</span>

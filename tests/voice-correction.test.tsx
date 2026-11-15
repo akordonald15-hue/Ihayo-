@@ -8,6 +8,7 @@ import type { VoiceClient } from '@/lib/voice/client';
 import { parseVoiceResponse, type VoiceResponse } from '@/lib/voice/contract';
 import { useConversation } from '@/lib/voice/useConversation';
 import report from './fixtures/voice-live-report.json';
+import axe from 'axe-core';
 
 const originalWords = 'My farm is in Kajuru, Kaduna. I grew maize last season.';
 const original = {
@@ -76,6 +77,25 @@ async function sendRecording() {
   fireEvent.click(screen.getByRole('button', { name: 'Send recording' }));
   await screen.findByRole('heading', { name: "Here's what Ihayo heard" });
 }
+
+it('keeps a stopped recording as an unsent chat draft until the composer send button is pressed', async () => {
+  const service = client();
+  render(<VoiceExperience client={service} />);
+  const mic = await screen.findByRole('button', { name: 'Start recording' });
+  expect(mic.closest('form')).toBe(screen.getByRole('form', { name: 'Speak or type your reply' }));
+  fireEvent.click(mic);
+  fireEvent.click(await screen.findByRole('button', { name: 'Stop recording' }));
+  await screen.findByLabelText('Review your recording');
+  expect(screen.getByRole('article', { name: 'Unsent voice note' })).toBeVisible();
+  expect(service.audio).not.toHaveBeenCalled();
+  expect(screen.queryByRole('heading', { name: "Here's what Ihayo heard" })).toBeNull();
+  const send = screen.getByRole('button', { name: 'Send recording' });
+  expect(send.closest('form')).toBe(mic.closest('form'));
+  fireEvent.click(send);
+  await screen.findByRole('heading', { name: "Here's what Ihayo heard" });
+  expect(service.audio).toHaveBeenCalledTimes(1);
+  expect(screen.queryByRole('article', { name: 'Unsent voice note' })).toBeNull();
+});
 
 it('retains audio and original transcript, invalidates stale advice, and sends edited words with full authoritative context', async () => {
   const service = client();
@@ -235,4 +255,42 @@ it('uses actual microphone samples and releases visualization resources without 
 
 it('rejects a malformed transcript rather than displaying fabricated or coerced words', () => {
   expect(() => parseVoiceResponse({ ...original, transcript: 123 })).toThrow();
+});
+
+it('does not silently cut a long original transcript when opening the correction editor', async () => {
+  const service = client();
+  const longTranscript = 'Words from the recording. '.repeat(150);
+  vi.mocked(service.audio).mockResolvedValue({ ...original, transcript: longTranscript });
+  render(<VoiceExperience client={service} />);
+  await sendRecording();
+  fireEvent.click(screen.getByRole('button', { name: 'Correct these words' }));
+  expect(screen.getByRole('textbox', { name: 'Your corrected words' })).toHaveValue(
+    longTranscript.trim(),
+  );
+  expect(screen.getByRole('button', { name: 'Send correction' })).toBeDisabled();
+  expect(screen.getByText(/Your original words have not been cut/)).toBeVisible();
+});
+
+it('avoids allocating an audio visualizer when reduced motion is requested', () => {
+  const originalMatchMedia = window.matchMedia;
+  Object.defineProperty(window, 'matchMedia', {
+    configurable: true,
+    value: () => ({ matches: true }),
+  });
+  const context = vi.fn();
+  vi.stubGlobal('AudioContext', context);
+  const { unmount } = render(<MicrophoneMeter stream={stream} />);
+  expect(context).not.toHaveBeenCalled();
+  expect(screen.getByRole('img', { name: 'Recording indicator' })).toBeVisible();
+  unmount();
+  Object.defineProperty(window, 'matchMedia', { configurable: true, value: originalMatchMedia });
+});
+
+it('keeps the redesigned recording and transcript interface structurally accessible', async () => {
+  const { container } = render(<VoiceExperience client={client()} />);
+  await sendRecording();
+  const audit = await axe.run(container, { rules: { 'color-contrast': { enabled: false } } });
+  expect(audit.violations.map((v) => ({ id: v.id, nodes: v.nodes.map((n) => n.target) }))).toEqual(
+    [],
+  );
 });

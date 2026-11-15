@@ -4,8 +4,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import {
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   Mic,
-  Send,
   Square,
   Trash2,
   Leaf,
@@ -274,161 +274,19 @@ export default function VoiceExperience({ client: injected }: { client?: VoiceCl
                 )}
                 {!unavailable && (
                   <>
-                    <section
-                      className={`voice-input ${recording.status === 'recording' ? 'is-recording' : ''} ${busy ? 'is-processing' : ''}`}
-                      aria-label="Speak or type your reply"
-                      aria-busy={busy}
-                    >
-                      <div className="voice-recorder-heading">
-                        <span>
-                          <Mic size={16} />A conversation about your farm
-                        </span>
-                        <span className="voice-live-label">
-                          <span className="voice-dot" />
-                          {busy ? 'Processing' : 'Ready when you are'}
-                        </span>
-                      </div>
-                      <div className="voice-recording-controls">
-                        <div className="voice-mic-stage">
-                          <span className="voice-mic-ring ring-one" aria-hidden="true" />
-                          <span className="voice-mic-ring ring-two" aria-hidden="true" />
-                          {recording.status === 'recording' ? (
-                            <button
-                              className="voice-mic voice-stop"
-                              aria-label="Stop recording"
-                              onClick={recording.stop}
-                            >
-                              <Square size={31} fill="currentColor" />
-                            </button>
-                          ) : (
-                            <button
-                              className="voice-mic"
-                              aria-label={micLabel}
-                              disabled={busy || recording.status === 'requesting'}
-                              onClick={() => {
-                                conversation.forgetRecording();
-                                void recording.start();
-                              }}
-                            >
-                              {busy || recording.status === 'requesting' ? (
-                                <LoaderCircle size={36} className="voice-spinner" />
-                              ) : (
-                                <Mic size={37} strokeWidth={1.5} />
-                              )}
-                            </button>
-                          )}
-                        </div>
-                        <strong className="voice-recording-title">
-                          {busy
-                            ? 'Ihayo is listening to your story...'
-                            : recording.status === 'recording'
-                              ? 'Your story is being recorded'
-                              : recording.status === 'requesting'
-                                ? 'Allow your microphone'
-                                : recording.audio
-                                  ? 'Take a moment to listen'
-                                  : 'Tap to speak.'}
-                        </strong>
-                        <p role="status" aria-live="polite">
-                          {recording.status === 'recording'
-                            ? 'Recording is on. Tap the square to stop.'
-                            : recording.status === 'requesting'
-                              ? 'Your browser will ask for microphone permission.'
-                              : recording.audio
-                                ? 'Recording stopped. Review before sending.'
-                                : 'Start with where you farm and what you grew before.'}
-                        </p>
-                        {recording.status === 'recording' && (
-                          <>
-                            <MicrophoneMeter stream={recording.stream} />
-                            <output aria-label="Recording elapsed time" className="voice-timer">
-                              {Math.floor(recording.seconds / 60)}:
-                              {String(recording.seconds % 60).padStart(2, '0')}
-                            </output>
-                          </>
-                        )}
-                        {microphoneActive && (
-                          <button className="text-button" onClick={recording.discard}>
-                            Cancel recording
-                          </button>
-                        )}
-                      </div>
-                      <p className="voice-recording-limit">
-                        Up to 3 minutes · 3.5 MB per voice note
-                      </p>
-                      {recording.error && (
-                        <p role="alert" className="notice">
-                          {recording.error}
-                        </p>
-                      )}
-                      {recording.audio && (
-                        <div className="voice-audio-review">
-                          <div className="voice-section-label">
-                            <span>Your recording</span>
-                            <span>
-                              {Math.floor(recording.seconds / 60)}:
-                              {String(recording.seconds % 60).padStart(2, '0')}
-                            </span>
-                          </div>
-                          {recording.url && (
-                            <audio
-                              aria-label="Review your recording"
-                              controls
-                              preload="metadata"
-                              src={recording.url}
-                            />
-                          )}
-                          <div className="button-row">
-                            <button
-                              className="button primary"
-                              disabled={busy}
-                              onClick={() => void sendAudio()}
-                            >
-                              <Send size={17} />
-                              Send recording
-                            </button>
-                            <button
-                              className="text-button"
-                              disabled={busy}
-                              onClick={() => {
-                                recording.discard();
-                                conversation.forgetRecording();
-                              }}
-                            >
-                              <Trash2 size={16} />
-                              Delete recording
-                            </button>
-                          </div>
-                        </div>
-                      )}
-                      {busy && (
-                        <div className="voice-processing" role="status">
-                          <span className="voice-processing-dots" aria-hidden="true">
-                            <i />
-                            <i />
-                            <i />
-                          </span>
-                          <span>Sending your message and preparing a response.</span>
-                          <button className="text-button" onClick={conversation.cancel}>
-                            Cancel request
-                          </button>
-                        </div>
-                      )}
-                      {state.error && (
-                        <div className="voice-error" role="alert">
-                          <p>{state.error}</p>
-                          {conversation.canRetry && (
-                            <button
-                              className="button secondary"
-                              disabled={busy || microphoneActive}
-                              onClick={() => void retry()}
-                            >
-                              Retry this message
-                            </button>
-                          )}
-                        </div>
-                      )}
-                    </section>
+                    <div className="voice-recorder-heading voice-chat-heading">
+                      <span>
+                        <Leaf size={16} />A conversation about your farm
+                      </span>
+                      <span className="voice-live-label">
+                        <span className="voice-dot" />
+                        {busy
+                          ? 'Processing'
+                          : microphoneActive
+                            ? 'Recording'
+                            : 'Ready when you are'}
+                      </span>
+                    </div>
                     <VoiceConversation
                       turns={state.turns}
                       active={!manual}
@@ -438,30 +296,193 @@ export default function VoiceExperience({ client: injected }: { client?: VoiceCl
                       onCorrect={correctWords}
                       onRemoveAudio={conversation.forgetAudio}
                     />
-                    <form className="voice-composer" onSubmit={(event) => void sendText(event)}>
-                      <label htmlFor="voice-message">Or type your reply</label>
+                    {recording.audio && !busy && (
+                      <article
+                        className="voice-bubble farmer voice-queued-note"
+                        aria-label="Unsent voice note"
+                      >
+                        <div className="voice-note-label">
+                          <Mic size={16} />
+                          <strong>Your voice note</strong>
+                          <span>Not sent</span>
+                        </div>
+                        {recording.url && (
+                          <audio
+                            aria-label="Review your recording"
+                            controls
+                            preload="metadata"
+                            src={recording.url}
+                          />
+                        )}
+                        <div className="voice-draft-footer">
+                          <span>
+                            {Math.floor(recording.seconds / 60)}:
+                            {String(recording.seconds % 60).padStart(2, '0')} · Ready to send
+                          </span>
+                          <button
+                            type="button"
+                            className="text-button"
+                            aria-label="Delete recording"
+                            onClick={() => {
+                              recording.discard();
+                              conversation.forgetRecording();
+                            }}
+                          >
+                            <Trash2 size={15} />
+                            Delete
+                          </button>
+                        </div>
+                      </article>
+                    )}
+                    <form
+                      className="voice-composer voice-chat-composer"
+                      aria-label="Speak or type your reply"
+                      aria-busy={busy}
+                      onSubmit={(event) => {
+                        if (recording.audio) {
+                          event.preventDefault();
+                          void sendAudio();
+                        } else {
+                          void sendText(event);
+                        }
+                      }}
+                    >
+                      {recording.status === 'recording' && (
+                        <div className="voice-inline-recording" role="status">
+                          <span className="voice-dot" />
+                          <span>Recording</span>
+                          <MicrophoneMeter stream={recording.stream} />
+                          <output aria-label="Recording elapsed time">
+                            {Math.floor(recording.seconds / 60)}:
+                            {String(recording.seconds % 60).padStart(2, '0')}
+                          </output>
+                        </div>
+                      )}
+                      {recording.status === 'requesting' && (
+                        <p role="status" className="voice-caption">
+                          Allow microphone access in your browser to record.
+                        </p>
+                      )}
                       <div className="voice-composer-field">
+                        <label className="sr-only" htmlFor="voice-message">
+                          Or type your reply
+                        </label>
                         <textarea
                           id="voice-message"
                           rows={2}
                           maxLength={MAX_MESSAGE_LENGTH}
                           value={message}
-                          disabled={busy || microphoneActive}
+                          disabled={busy || microphoneActive || !!recording.audio}
                           onChange={(event) => setMessage(event.target.value)}
-                          placeholder="My farm is in..."
+                          placeholder={
+                            recording.audio
+                              ? 'Your voice note is ready to send.'
+                              : 'Tell Ihayo about your farm...'
+                          }
                         />
-                        <button
-                          className="voice-send"
-                          type="submit"
-                          aria-label="Send message"
-                          disabled={busy || microphoneActive || !message.trim()}
-                        >
-                          <ArrowRight size={23} />
-                        </button>
+                        <div className="voice-composer-toolbar">
+                          <span className="voice-composer-hint">
+                            {recording.status === 'recording'
+                              ? 'Tap stop when you are done'
+                              : recording.audio
+                                ? 'Review, then press send'
+                                : 'Speak or type'}
+                          </span>
+                          {microphoneActive && (
+                            <button
+                              type="button"
+                              className="text-button voice-cancel-recording"
+                              onClick={recording.discard}
+                            >
+                              Cancel recording
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            className={`voice-composer-mic ${recording.status === 'recording' ? 'is-recording' : ''}`}
+                            aria-label={
+                              recording.status === 'recording' ? 'Stop recording' : micLabel
+                            }
+                            title={recording.status === 'recording' ? 'Stop recording' : micLabel}
+                            disabled={busy || recording.status === 'requesting'}
+                            onClick={() => {
+                              if (recording.status === 'recording') recording.stop();
+                              else {
+                                conversation.forgetRecording();
+                                void recording.start();
+                              }
+                            }}
+                          >
+                            {recording.status === 'requesting' ? (
+                              <LoaderCircle size={20} className="voice-spinner" />
+                            ) : recording.status === 'recording' ? (
+                              <Square size={17} fill="currentColor" />
+                            ) : (
+                              <Mic size={21} strokeWidth={1.7} />
+                            )}
+                          </button>
+                          <button
+                            className="voice-send"
+                            type="submit"
+                            aria-label={recording.audio ? 'Send recording' : 'Send message'}
+                            title={recording.audio ? 'Send recording' : 'Send message'}
+                            disabled={
+                              busy || microphoneActive || (!recording.audio && !message.trim())
+                            }
+                          >
+                            {busy ? (
+                              <LoaderCircle size={20} className="voice-spinner" />
+                            ) : (
+                              <ArrowUp size={23} />
+                            )}
+                          </button>
+                        </div>
                       </div>
-                      <span className="voice-caption">
-                        Your experience is the starting point. No account needed.
-                      </span>
+                      <p className="voice-composer-disclosure">
+                        Voice notes stay on this device until you press Send. Ihayo returns the
+                        transcript after sending. Up to 3 minutes · 3.5 MB.
+                      </p>
+                      {recording.error && (
+                        <p role="alert" className="notice">
+                          {recording.error}
+                        </p>
+                      )}
+                      {busy && (
+                        <div className="voice-processing" role="status">
+                          <span className="voice-processing-dots" aria-hidden="true">
+                            <i />
+                            <i />
+                            <i />
+                          </span>
+                          <span>
+                            {recording.audio
+                              ? 'Transcribing your voice note and preparing a response...'
+                              : 'Preparing your response...'}
+                          </span>
+                          <button
+                            type="button"
+                            className="text-button"
+                            onClick={conversation.cancel}
+                          >
+                            Cancel request
+                          </button>
+                        </div>
+                      )}
+                      {state.error && (
+                        <div className="voice-error" role="alert">
+                          <p>{state.error}</p>
+                          {conversation.canRetry && (
+                            <button
+                              type="button"
+                              className="button secondary"
+                              disabled={busy || microphoneActive}
+                              onClick={() => void retry()}
+                            >
+                              Retry this message
+                            </button>
+                          )}
+                        </div>
+                      )}
                     </form>
                   </>
                 )}
